@@ -1,48 +1,36 @@
-import React, { useEffect, useState, useCallback } from 'react';
+// src/App.js
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import MyFormComponent from './MyFormComponent';
 import { GlobalStyle } from './App.styled.js';
 
-const getAccessToken = (() => {
-  let cachedToken = null;
-  let tokenExpiry = null;
+const getAccessToken = async () => {
+  const clientId = process.env.REACT_APP_CLIENT_ID;
+  const clientSecret = process.env.REACT_APP_CLIENT_SECRET;
+  const refreshToken = process.env.REACT_APP_REFRESH_TOKEN;
+  const gatewayUrl = process.env.REACT_APP_GATEWAY_URL;
 
-  return async () => {
-    if (cachedToken && tokenExpiry && new Date() < tokenExpiry) {
-      return cachedToken;
-    }
-
-    const clientId = process.env.REACT_APP_CLIENT_ID;
-    const clientSecret = process.env.REACT_APP_CLIENT_SECRET;
-    const refreshToken = process.env.REACT_APP_REFRESH_TOKEN;
-    const gatewayUrl = process.env.REACT_APP_GATEWAY_URL;
-
-    const encodedCredentials = btoa(`${clientId}:${clientSecret}`);
-    try {
-      const response = await axios.post(
-        `${gatewayUrl}/auth/oauth2/token`,
-        new URLSearchParams({
-          grant_type: 'refresh_token',
-          refresh_token: refreshToken,
-        }),
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Authorization: `Basic ${encodedCredentials}`,
-          },
-        }
-      );
-
-      cachedToken = response.data.access_token;
-      tokenExpiry = new Date(new Date().getTime() + 1000 * 60 * 59); // Set expiry for 59 minutes later
-
-      return cachedToken;
-    } catch (error) {
-      console.error('Error fetching access token:', error);
-      return null;
-    }
-  };
-})();
+  const encodedCredentials = btoa(`${clientId}:${clientSecret}`);
+  try {
+    const response = await axios.post(
+      `${gatewayUrl}/auth/oauth2/token`,
+      new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
+      }),
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Authorization: `Basic ${encodedCredentials}`,
+        },
+      }
+    );
+    return response.data.access_token;
+  } catch (error) {
+    console.error('Error fetching access token:', error);
+    return null;
+  }
+};
 
 const App = () => {
   const [jsonSchema, setJsonSchema] = useState(null);
@@ -50,38 +38,31 @@ const App = () => {
   const [employmentId, setEmploymentId] = useState(null);
   const [isContractDetails, setIsContractDetails] = useState(false);
 
-  const fetchSchema = useCallback(async (endpoint) => {
-    const token = await getAccessToken();
-
-    if (token) {
+  useEffect(() => {
+    const fetchSchema = async () => {
+      const token = await getAccessToken();
       setAccessToken(token);
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_GATEWAY_URL}${endpoint}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setJsonSchema(response.data.data);
-      } catch (error) {
-        console.error('Error fetching JSON schema:', error);
+
+      if (token) {
+        try {
+          const response = await axios.get(
+            `${process.env.REACT_APP_GATEWAY_URL}/v1/countries/GBR/employment_basic_information`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setIsContractDetails(false); // Set to false for initial employment info
+          setJsonSchema(response.data.data);
+        } catch (error) {
+          console.error('Error fetching JSON schema:', error);
+        }
       }
-    }
+    };
+
+    fetchSchema();
   }, []);
-
-  useEffect(() => {
-    if (!isContractDetails) {
-      fetchSchema('/v1/countries/GBR/employment_basic_information');
-    }
-  }, [fetchSchema, isContractDetails]);
-
-  useEffect(() => {
-    if (employmentId && isContractDetails) {
-      fetchSchema('/v1/countries/GBR/contract_details');
-    }
-  }, [employmentId, isContractDetails, fetchSchema]);
 
   const handleSubmit = async (jsonValues) => {
     try {
@@ -113,8 +94,17 @@ const App = () => {
           const newEmploymentId = postResponse.data.data.employment.id;
           setEmploymentId(newEmploymentId);
 
-          // Trigger the fetch for contract details schema
-          setIsContractDetails(true);
+          // Fetch contract details schema
+          const schemaResponse = await axios.get(
+            `${process.env.REACT_APP_GATEWAY_URL}/v1/countries/GBR/contract_details`,
+            {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            }
+          );
+          setJsonSchema(schemaResponse.data.data);
+          setIsContractDetails(true); // Now we are dealing with contract details
         }
       } else {
         // Patch employment with contract details
@@ -122,7 +112,7 @@ const App = () => {
           `${process.env.REACT_APP_GATEWAY_URL}/v1/employments/${employmentId}`,
           {
             contract_details: {
-              ...jsonValues.contract_details,
+              ...jsonValues.contract_details,  // Contract details filled by the user
             },
             pricing_plan_details: {
               frequency: jsonValues.pricing_plan,
@@ -149,7 +139,7 @@ const App = () => {
       <div className="App">
         <h1>Employment Information Form</h1>
         {jsonSchema ? (
-          <MyFormComponent jsonSchema={jsonSchema} onSubmit={handleSubmit} isContractDetails={isContractDetails} />
+          <MyFormComponent jsonSchema={jsonSchema} onSubmit={handleSubmit} isContractDetails/>
         ) : (
           <div>Loading...</div>
         )}
