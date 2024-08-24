@@ -10,6 +10,11 @@ export const GlobalStyle = createGlobalStyle`
   }
 `;
 
+export const FieldsetRaw = styled.fieldset`
+  border: none;
+  padding: none;
+`;
+
 export const FormArea = styled.div`
   margin: 0 auto;
   padding: 20px;
