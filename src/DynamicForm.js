@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { useFormik } from 'formik';
 import PropTypes from 'prop-types';
+import { FormArea, Label, Error, Hint } from './App.styled.js';
 
 const DynamicForm = ({ fields, validationSchema, onSubmit }) => {
   const initialValues = useMemo(() => {
@@ -24,6 +25,7 @@ const DynamicForm = ({ fields, validationSchema, onSubmit }) => {
             acc[field.name] = parseInt(values[field.name], 10);
             break;
           case 'boolean':
+          case 'checkbox':
             acc[field.name] = values[field.name] === 'true' || values[field.name] === true;
             break;
           default:
@@ -37,23 +39,25 @@ const DynamicForm = ({ fields, validationSchema, onSubmit }) => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      {fields.map((field) => (
-        <div key={field.name}>
-          <label>{field.label}</label>
-          <input
-            type={field.type}
-            name={field.name}
-            onChange={formik.handleChange}
-            value={formik.values[field.name]}
-          />
-          {formik.errors[field.name] && formik.touched[field.name] ? (
-            <div>{formik.errors[field.name]}</div>
-          ) : null}
-        </div>
-      ))}
-      <button type="submit">Submit</button>
-    </form>
+    <FormArea>
+      <form onSubmit={formik.handleSubmit}>
+        {fields.map((field) => (
+          <div key={field.name}>
+            <Label>{field.label}</Label>
+            <input
+              type={field.type}
+              name={field.name}
+              onChange={formik.handleChange}
+              value={formik.values[field.name]}
+            />
+            {formik.errors[field.name] && formik.touched[field.name] ? (
+              <Error>{formik.errors[field.name]}</Error>
+            ) : null}
+          </div>
+        ))}
+        <button type="submit">Submit</button>
+      </form>
+    </FormArea>
   );
 };
 

@@ -42,30 +42,66 @@ function getPrefilledValues(fields, initialValues) {
   }, {});
 }
 
-// Function to transform form values to JSON values according to the schema
+
+
 function formValuesToJsonValues(values, fields) {
   const fieldValueTransform = {
     text: (val) => val,
-    number: (val) => (val === "" ? val : +val),
+    number: (val) => (val === "" ? val : parseFloat(val)),
     money: (val) => (val === "" ? null : val * 100),
+    integer: (val) => (val === "" ? null : parseInt(val)),
     boolean: (val) => (val === "true" || val === true),
+    email: (val) => val,
+    textarea: (val) => val,
+    select: (val) => val,
+    radio: (val) => val,
+    checkbox: (val, fieldsetFields,fieldProps) => {
+      // Ensure field is defined and has a const property
+      if (fieldProps && typeof fieldProps === 'object') {
+        if (typeof val === "boolean") {
+          return val ? fieldProps.const : null;
+        }
+      }
+      // Fallback for unexpected cases
+      return val === "" ? null : val;
+    },
+    date: (val) => val,
+    fieldset: (val, fieldsetFields) => {
+      if (typeof val !== "object" || val === null) return null;
+
+      const fieldsetValues = {};
+      Object.keys(val).forEach((key) => {
+          const subField = fieldsetFields.find((f) => f.name === key);
+          if (subField) {
+            const subFieldValue = fieldValueTransform[subField.inputType]?.(val[key], subField);
+            if (subFieldValue !== "" && subFieldValue !== null && subFieldValue !== undefined) {
+              fieldsetValues[key] = subFieldValue;
+            }
+          }
+      });
+
+      return Object.keys(fieldsetValues).length > 0 ? fieldsetValues : null;
+    }
   };
 
   const jsonValues = {};
 
-  fields.forEach(({ name, inputType }) => {
+  fields.forEach(({ name, inputType, fields: fieldsetFields, ...fieldProps }) => {
     const formValue = values[name];
-    const transformedValue = fieldValueTransform[inputType]?.(formValue);
+    const transformedValue = fieldValueTransform[inputType]?.(formValue,fieldsetFields, fieldProps);
     const valueToUse =
       transformedValue === null || transformedValue !== undefined
         ? transformedValue
         : formValue;
 
-    jsonValues[name] = valueToUse;
+    if (valueToUse !== "" && valueToUse !== null && valueToUse !== undefined) {
+      jsonValues[name] = valueToUse;
+    }
   });
 
   return jsonValues;
 }
+
 
 export default function MyFormComponent({ jsonSchema, onSubmit, isContractDetails }) {
   const [modifiedSchema, setModifiedSchema] = useState(null);

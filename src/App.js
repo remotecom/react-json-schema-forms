@@ -1,9 +1,8 @@
-// App.js
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import MyFormComponent from './MyFormComponent';
 import DynamicForm from './DynamicForm';
-import { GlobalStyle } from './App.styled.js';
+import { GlobalStyle, FormArea, Error } from './App.styled.js';
 import * as Yup from 'yup';
 
 const getAccessToken = (() => {
@@ -54,9 +53,12 @@ const App = () => {
   const [isContractDetails, setIsContractDetails] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [initialFormValues, setInitialFormValues] = useState(null);
+  const [submissionStatus, setSubmissionStatus] = useState(null);
+  const [error, setError] = useState(null);
 
   const fetchSchema = useCallback(async (endpoint) => {
     setIsLoading(true);
+    setError(null);
     const token = await getAccessToken();
 
     if (token) {
@@ -73,6 +75,7 @@ const App = () => {
         setJsonSchema(response.data.data);
       } catch (error) {
         console.error('Error fetching JSON schema:', error);
+        setError(`Error fetching form data: ${error.response?.data?.message || error.message}`);
       } finally {
         setIsLoading(false);
       }
@@ -99,6 +102,8 @@ const App = () => {
 
   const handleSubmit = async (jsonValues) => {
     try {
+      setError(null);
+
       if (!isContractDetails) {
         const postResponse = await axios.post(
           `${process.env.REACT_APP_GATEWAY_URL}/v1/employments`,
@@ -146,11 +151,44 @@ const App = () => {
           }
         );
 
-        console.log('Employment patched successfully:', patchResponse.data);
+        if (patchResponse.status === 200) {
+          if (initialFormValues.send_self_enrollment_invitation) {
+            try {
+              const inviteResponse = await axios.post(
+                `${process.env.REACT_APP_GATEWAY_URL}/v1/employments/${employmentId}/invite`,
+                {},
+                {
+                  headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json',
+                  },
+                }
+              );
+              setSubmissionStatus('Invite sent successfully!');
+              console.log('Self-enrollment invitation sent:', inviteResponse.data);
+            } catch (error) {
+              setSubmissionStatus('Contract details and pricing plan submitted successfully, but failed to send invite.');
+              setError(`Failed to send invite: ${error.response?.data?.message || error.message}`);
+              console.error('Failed to send invite:', error);
+            }
+          } else {
+            setSubmissionStatus('Contract details and pricing plan submitted successfully, invite was not sent as requested.');
+          }
+        }
       }
     } catch (error) {
+      setSubmissionStatus('Patch request failed.');
+      setError(`An error occurred during the patch request: ${error.response?.data?.message || error.message}`);
       console.error('Error during employment process:', error);
     }
+  };
+
+  const handleStartOver = () => {
+    setInitialFormValues(null);
+    setEmploymentId(null);
+    setIsContractDetails(false);
+    setSubmissionStatus(null);
+    setError(null);
   };
 
   const initialFormFields = [
@@ -180,12 +218,19 @@ const App = () => {
       ],
       defaultValue: '',
     },
+    {
+      name: 'send_self_enrollment_invitation',
+      label: 'Send Self-Enrollment Invitation',
+      type: 'checkbox',
+      defaultValue: false,
+    },
   ];
 
   const validationSchema = Yup.object({
     country_code: Yup.string().required('Country code is required'),
     type: Yup.string().required('Type of employee is required'),
     pricing_plan: Yup.string().required('Pricing plan is required'),
+    send_self_enrollment_invitation: Yup.boolean(),
   });
 
   return (
@@ -202,8 +247,14 @@ const App = () => {
           <>
             {isLoading ? (
               <div>Loading...</div>
+            ) : submissionStatus ? (
+              <FormArea>
+                <h2>{submissionStatus}</h2>
+                {error && <Error>{error}</Error>}
+                <button onClick={handleStartOver}>Start Over</button>
+              </FormArea>
             ) : (
-              <>
+              <FormArea>
                 <h1>Employment Information Form</h1>
                 {jsonSchema && (
                   <MyFormComponent
@@ -212,7 +263,8 @@ const App = () => {
                     isContractDetails={isContractDetails}
                   />
                 )}
-              </>
+                {error && <Error>{error}</Error>}
+              </FormArea>
             )}
           </>
         )}
