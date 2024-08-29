@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export const GlobalStyle = createGlobalStyle`
   :root {
     --colors-linkWater: #F4F7FC;
-    --colors-irisBlue: #624DE3;
+    --colors-darkNavy: #00183e;
     --colors-darkBlue: #00234B;
     --colors-blank: #ffffff;
     --colors-bayoux: #525F7F;
@@ -25,7 +25,7 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   a {
-    color: var(--colors-irisBlue);
+    color: var(--colors-darkNavy);
   }
 
   h1,
@@ -93,7 +93,7 @@ export const FormArea = styled.div`
   }
 
   button[type="submit"] {
-    background-color: var(--colors-irisBlue);
+    background-color: var(--colors-darkNavy);
     color: var(--colors-blank);
     min-height: 40px;
     min-width: 120px;
@@ -118,7 +118,7 @@ export const FormArea = styled.div`
   }
 
     button {
-    background-color: var(--colors-irisBlue);
+    background-color: var(--colors-darkNavy);
     color: var(--colors-blank);
     min-height: 40px;
     min-width: 120px;
@@ -143,7 +143,7 @@ export const FormArea = styled.div`
   }
 
     Button {
-    background-color: var(--colors-irisBlue);
+    background-color: var(--colors-darkNavy);
     color: var(--colors-blank);
     min-height: 40px;
     min-width: 120px;
@@ -253,7 +253,7 @@ export const CredsFormWrapper = styled.div`
 `;
 
 export const ToggleButton = styled.button`
-   background-color: var(--colors-irisBlue);
+   background-color: var(--colors-darkNavy);
     color: var(--colors-blank);
     min-height: 40px;
     min-width: 120px;
@@ -276,7 +276,7 @@ export const ToggleButton = styled.button`
 
 export const StyledLinkButton = styled(Link)`
   display: inline-block;
-  background-color: var(--colors-irisBlue);
+  background-color: var(--colors-darkNavy);
   color: var(--colors-blank);
   min-height: 40px;
   min-width: 120px;
@@ -310,7 +310,7 @@ export const RouteContainer = styled.div`
 `;
 export const HomeButton = styled(Link)`
   display: inline-block;
-  background-color: var(--colors-irisBlue);
+  background-color: var(--colors-darkNavy);
   color: var(--colors-blank);
   padding: 10px 20px;
   border-radius: 5px;

@@ -15,7 +15,7 @@ function App() {
               path="/" 
               element={
                 <FormArea>
-                  <h1>Welcome to the Employment and Company Management System</h1>
+                  <h1>Experience Remote Embedded</h1>
                   <div style={{ margin: '20px 0', display: 'flex', gap: '10px' }}>
                     <StyledLinkButton to="/create-company">Create a Company</StyledLinkButton>
                     <StyledLinkButton to="/create-employment">Create Employment</StyledLinkButton>
