@@ -140,7 +140,34 @@ export const FormArea = styled.div`
         rgb(98 77 227) 0px 0px 0px 5px;
     }
   }
+
+    Button {
+    background-color: var(--colors-irisBlue);
+    color: var(--colors-blank);
+    min-height: 40px;
+    min-width: 120px;
+    border-radius: 50px;
+    border-width: 2px;
+    border: none;
+    padding: 0px 22px;
+    cursor: pointer;
+
+    &:hover {
+      filter: saturate(1.4);
+    }
+
+    &:focus:not(:focus-visible) {
+      outline: none;
+    }
+    &:focus-visible {
+      outline: none;
+      box-shadow: rgb(255 255 255) 0px 0px 0px 3px,
+        rgb(98 77 227) 0px 0px 0px 5px;
+    }
+  }
 `;
+
+
 
 export const Label = styled.label`
   display: block;
@@ -211,4 +238,37 @@ export const Disclaimer = styled.p`
   color: #d92020;
   font-size: 1rem;
   margin-top: 10px;
+`;
+export const CredsFormWrapper = styled.div`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 300px;
+  background-color: var(--colors-blank);
+  border-radius: 10px;
+  box-shadow: rgb(0 0 0 / 10%) 4px 4px 20px;
+  padding: 16px;
+  z-index: 1000;
+`;
+
+export const ToggleButton = styled.button`
+   background-color: var(--colors-irisBlue);
+    color: var(--colors-blank);
+    min-height: 40px;
+    min-width: 120px;
+    border-radius: 50px;
+    border-width: 2px;
+    border: none;
+    padding: 0px 22px;
+    cursor: pointer;
+
+    &:hover {
+      filter: saturate(1.4);
+    } 
+
+  &::after {
+    content: '${props => (props.isCollapsed ? '→' : '↓')}';
+    margin-left: 8px;
+    transition: transform 0.3s ease;
+  }
 `;
