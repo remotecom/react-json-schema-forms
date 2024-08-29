@@ -1,4 +1,5 @@
 import styled, { createGlobalStyle } from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const GlobalStyle = createGlobalStyle`
   :root {
@@ -270,5 +271,54 @@ export const ToggleButton = styled.button`
     content: '${props => (props.isCollapsed ? '→' : '↓')}';
     margin-left: 8px;
     transition: transform 0.3s ease;
+  }
+`;
+
+export const StyledLinkButton = styled(Link)`
+  display: inline-block;
+  background-color: var(--colors-irisBlue);
+  color: var(--colors-blank);
+  min-height: 40px;
+  min-width: 120px;
+  border-radius: 50px;
+  border: none;
+  padding: 10px 22px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    filter: saturate(1.4);
+  }
+
+  &:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: rgb(255 255 255) 0px 0px 0px 3px,
+      rgb(98 77 227) 0px 0px 0px 5px;
+  }
+`;
+export const RouteContainer = styled.div`
+  background-color: var(--colors-linkWater);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: rgb(0 0 0 / 10%) 4px 4px 20px;
+  margin-top: 20px;
+`;
+export const HomeButton = styled(Link)`
+  display: inline-block;
+  background-color: var(--colors-irisBlue);
+  color: var(--colors-blank);
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-bottom: 20px;
+
+  &:hover {
+    background-color: var(--colors-darkBlue);
   }
 `;

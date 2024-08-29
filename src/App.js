@@ -1,294 +1,35 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import axios from 'axios';
-import MyFormComponent from './MyFormComponent';
-import DynamicForm from './DynamicForm';
-import CredsForm from './CredsForm';
-import { GlobalStyle, FormArea, Error } from './App.styled.js';
-import * as Yup from 'yup';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import EmploymentCreationApp from './Employment_Creation/App';
+import CompanyCreationApp from './Company_Creation/App';
+import { StyledLinkButton, RouteContainer, GlobalStyle, FormArea, HomeButton } from './App.styled';
 
-const App = () => {
-  const [jsonSchema, setJsonSchema] = useState(null);
-  const [accessToken, setAccessToken] = useState(null);
-  const [employmentId, setEmploymentId] = useState(null);
-  const [isContractDetails, setIsContractDetails] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [initialFormValues, setInitialFormValues] = useState(null);
-  const [submissionStatus, setSubmissionStatus] = useState(null);
-  const [error, setError] = useState(null);
-
-  const [creds, setCreds] = useState({
-    clientId: process.env.REACT_APP_CLIENT_ID || '',
-    clientSecret: process.env.REACT_APP_CLIENT_SECRET || '',
-    refreshToken: process.env.REACT_APP_REFRESH_TOKEN || '',
-    gatewayUrl: process.env.REACT_APP_GATEWAY_URL || '',
-  });
-
-  // Fetch Access Token Function
-  const getAccessToken = useCallback(async () => {
-    let cachedToken = null;
-    let tokenExpiry = null;
-
-    if (cachedToken && tokenExpiry && new Date() < tokenExpiry) {
-      return cachedToken;
-    }
-
-    const { clientId, clientSecret, refreshToken, gatewayUrl } = creds;
-
-    if (!clientId || !clientSecret || !refreshToken || !gatewayUrl) {
-      console.error('Missing credentials.');
-      setError(`Error fetching form data: Missing credentials.`);
-      setIsLoading(false);
-      return null;
-    }
-
-    const encodedCredentials = btoa(`${clientId}:${clientSecret}`);
-    try {
-      const response = await axios.post(
-        `${gatewayUrl}/auth/oauth2/token`,
-        new URLSearchParams({
-          grant_type: 'refresh_token',
-          refresh_token: refreshToken,
-        }),
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Authorization: `Basic ${encodedCredentials}`,
-          },
-        }
-      );
-
-      cachedToken = response.data.access_token;
-      tokenExpiry = new Date(new Date().getTime() + 1000 * 60 * 59); // Set expiry for 59 minutes later
-
-      return cachedToken;
-    } catch (error) {
-      console.error('Error fetching access token:', error);
-      setError(`Error fetching form data: Error fetching access token:`);
-      setIsLoading(false);
-      return null;
-    }
-  }, [creds]);
-
-  const fetchSchema = useCallback(async (endpoint) => {
-    setIsLoading(true);
-    setError(null);
-    const token = await getAccessToken();
-
-    if (token) {
-      setAccessToken(token);
-      try {
-        const response = await axios.get(
-          `${creds.gatewayUrl}${endpoint}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setJsonSchema(response.data.data);
-      } catch (error) {
-        console.error('Error fetching JSON schema:', error);
-        setError(`Error fetching form data: ${error.response?.data?.message || error.message}`);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-  }, [creds.gatewayUrl, getAccessToken]);
-
-  useEffect(() => {
-    if (initialFormValues && !isContractDetails) {
-      fetchSchema(`/v1/countries/${initialFormValues.country_code}/employment_basic_information`);
-    }
-  }, [fetchSchema, isContractDetails, initialFormValues]);
-
-  useEffect(() => {
-    if (employmentId && isContractDetails) {
-      fetchSchema(`/v1/countries/${initialFormValues.country_code}/contract_details`);
-    }
-  }, [employmentId, isContractDetails, fetchSchema, initialFormValues]);
-
-  const handleInitialFormSubmit = (values) => {
-    setInitialFormValues(values);
-  };
-
-  const handleSubmit = async (jsonValues) => {
-    try {
-      setError(null);
-
-      if (!isContractDetails) {
-        const postResponse = await axios.post(
-          `${creds.gatewayUrl}/v1/employments`,
-          {
-            basic_information: {
-              email: jsonValues.email,
-              has_seniority_date: jsonValues.has_seniority_date,
-              job_title: jsonValues.job_title,
-              name: jsonValues.name,
-              provisional_start_date: jsonValues.provisional_start_date,
-            },
-            country_code: initialFormValues.country_code,
-            type: initialFormValues.type,
-            pricing_plan: initialFormValues.pricing_plan,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-
-        if (postResponse.status === 201) {
-          const newEmploymentId = postResponse.data.data.employment.id;
-          setEmploymentId(newEmploymentId);
-          setIsContractDetails(true);
-        }
-      } else {
-        const patchResponse = await axios.patch(
-          `${creds.gatewayUrl}/v1/employments/${employmentId}`,
-          {
-            contract_details: {
-              ...jsonValues
-            },
-            pricing_plan_details: {
-              frequency: initialFormValues.pricing_plan,
-            },
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-              'Content-Type': 'application/json',
-            },
-          }
-        );
-
-        if (patchResponse.status === 200) {
-          if (initialFormValues.send_self_enrollment_invitation) {
-            try {
-              const inviteResponse = await axios.post(
-                `${creds.gatewayUrl}/v1/employments/${employmentId}/invite`,
-                {},
-                {
-                  headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json',
-                  },
-                }
-              );
-              setSubmissionStatus('Invite sent successfully!');
-            } catch (error) {
-              setSubmissionStatus('Contract details and pricing plan submitted successfully, but failed to send invite.');
-              setError(`Failed to send invite: ${error.response?.data?.message || error.message}`);
-            }
-          } else {
-            setSubmissionStatus('Contract details and pricing plan submitted successfully, invite was not sent as requested.');
-          }
-        }
-      }
-    } catch (error) {
-      setSubmissionStatus('Patch request failed.');
-      setError(`An error occurred during the patch request: ${error.response?.data?.message || error.message}`);
-    }
-  };
-
-  const handleStartOver = () => {
-    setInitialFormValues(null);
-    setEmploymentId(null);
-    setIsContractDetails(false);
-    setSubmissionStatus(null);
-    setError(null);
-  };
-
-  const handleCredsSubmit = (values) => {
-    setCreds(values);
-  };
-
-  const initialFormFields = [
-    {
-      name: 'country_code',
-      label: 'Country Code',
-      type: 'text',
-      defaultValue: '',
-    },
-    {
-      name: 'type',
-      label: 'Type of Employee',
-      type: 'select',
-      options: [
-        { value: 'employee', label: 'Employee' },
-        { value: 'contractor', label: 'Contractor' },
-      ],
-      defaultValue: '',
-    },
-    {
-      name: 'pricing_plan',
-      label: 'Pricing Plan',
-      type: 'select',
-      options: [
-        { value: 'monthly', label: 'Monthly' },
-        { value: 'annually', label: 'Annually' },
-      ],
-      defaultValue: '',
-    },
-    {
-      name: 'send_self_enrollment_invitation',
-      label: 'Send Self-Enrollment Invitation',
-      type: 'checkbox',
-      defaultValue: false,
-    },
-  ];
-
-  const validationSchema = Yup.object({
-    country_code: Yup.string().required('Country code is required'),
-    type: Yup.string().required('Type of employee is required'),
-    pricing_plan: Yup.string().required('Pricing plan is required'),
-    send_self_enrollment_invitation: Yup.boolean(),
-  });
-
+function App() {
   return (
     <>
       <GlobalStyle />
-      <div className="App">
-        <CredsForm
-          initialValues={creds}
-          onSubmit={handleCredsSubmit}
-        />
-        {!initialFormValues ? (
-          <DynamicForm
-            fields={initialFormFields}
-            validationSchema={validationSchema}
-            onSubmit={handleInitialFormSubmit}
-            disableSubmit={Object.values(creds).some(value => !value)}
-          />
-        ) : (
-          <>
-            {isLoading ? (
-              <div>Loading...</div>
-            ) : submissionStatus ? (
-              <FormArea>
-                {error && <Error>{error}</Error>}
-                <h2>{submissionStatus}</h2>
-                {error && <Error>{error}</Error>}
-                <button onClick={handleStartOver}>Start Over</button>
-              </FormArea>
-            ) : (
-              <FormArea>
-                <h1>Employment Information Form</h1>
-                {jsonSchema && (
-                  <MyFormComponent
-                    jsonSchema={jsonSchema}
-                    onSubmit={handleSubmit}
-                    isContractDetails={isContractDetails}
-                  />
-                )}
-                {error && <Error>{error}</Error>}
-              </FormArea>
-            )}
-          </>
-        )}
-      </div>
+      <Router>
+        <div className="App">
+          <Routes>
+            <Route 
+              path="/" 
+              element={
+                <FormArea>
+                  <h1>Welcome to the Employment and Company Management System</h1>
+                  <div style={{ margin: '20px 0', display: 'flex', gap: '10px' }}>
+                    <StyledLinkButton to="/create-company">Create a Company</StyledLinkButton>
+                    <StyledLinkButton to="/create-employment">Create Employment</StyledLinkButton>
+                  </div>
+                </FormArea>
+              } 
+            />
+            <Route path="/create-company" element={<CompanyCreationApp />} />
+            <Route path="/create-employment" element={<EmploymentCreationApp />} />
+          </Routes>
+        </div>
+      </Router>
     </>
   );
-};
+}
 
 export default App;
