@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useFormik } from 'formik';
 import PropTypes from 'prop-types';
-import { FormArea, Label, Error, Hint } from './App.styled.js';
+import { FormArea, Label, Error } from './App.styled.js';
 
 const DynamicForm = ({ fields, validationSchema, onSubmit }) => {
   const initialValues = useMemo(() => {
@@ -44,12 +44,30 @@ const DynamicForm = ({ fields, validationSchema, onSubmit }) => {
         {fields.map((field) => (
           <div key={field.name}>
             <Label>{field.label}</Label>
-            <input
-              type={field.type}
-              name={field.name}
-              onChange={formik.handleChange}
-              value={formik.values[field.name]}
-            />
+            {field.type === 'select' ? (
+              <select
+                name={field.name}
+                onChange={(event) => {
+                  formik.handleChange(event);
+                  if (field.onChange) field.onChange(event);
+                }}
+                value={formik.values[field.name]}
+              >
+                <option value="" disabled>Select {field.label}</option>
+                {field.options && field.options.map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                type={field.type}
+                name={field.name}
+                onChange={formik.handleChange}
+                value={formik.values[field.name]}
+              />
+            )}
             {formik.errors[field.name] && formik.touched[field.name] ? (
               <Error>{formik.errors[field.name]}</Error>
             ) : null}
@@ -68,6 +86,13 @@ DynamicForm.propTypes = {
       label: PropTypes.string,
       type: PropTypes.string.isRequired,
       defaultValue: PropTypes.any,
+      options: PropTypes.arrayOf(
+        PropTypes.shape({
+          value: PropTypes.string.isRequired,
+          label: PropTypes.string.isRequired,
+        })
+      ),
+      onChange: PropTypes.func, // Add onChange prop to handle specific field change
     })
   ).isRequired,
   validationSchema: PropTypes.object.isRequired, // Validation schema typically provided by Yup
