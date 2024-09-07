@@ -322,3 +322,90 @@ export const HomeButton = styled(Link)`
     background-color: var(--colors-darkBlue);
   }
 `;
+
+export const ResultContainer = styled.div`
+  padding: 20px;
+  background-color: var(--colors-blank);
+  border-radius: 8px;
+  box-shadow: rgb(0 0 0 / 10%) 4px 4px 20px;
+  margin: 20px 0;
+  max-width: 100%; /* Ensure the container can expand */
+  overflow-x: auto; /* Handle any overflow gracefully */
+`;
+
+export const Section = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 10px; /* Reduced to create a tighter layout */
+  align-items: flex-start;
+  padding-left: ${({ level }) => (level > 1 ? `${(level - 1) * 20}px` : '0px')};
+`;
+
+export const Key = styled.div`
+  font-weight: bold;
+  color: var(--colors-darkBlue);
+  font-size: clamp(0.8rem, 1vw, 1rem); /* Dynamically adjusts font size */
+  flex-shrink: 0;
+  overflow-wrap: break-word; /* Prevents long keys from overflowing */
+`;
+
+export const Value = styled.div`
+  color: var(--colors-bayoux);
+  font-size: clamp(0.8rem, 1vw, 1rem); /* Dynamically adjusts font size */
+  flex-grow: 1;
+  text-align: left;
+  overflow-wrap: break-word; /* Prevents long values from overflowing */
+  margin-left: 10px; /* Space between key and value */
+`;
+
+export const ArrayItem = styled.div`
+  padding-left: ${({ level }) => (level > 1 ? `${(level - 1) * 20}px` : '0px')};
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--colors-linkWater);
+`;
+
+
+export const ResultArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the content horizontally */
+  max-width: 90%; /* Slightly wider than FormArea */
+  padding: 32px 16px;
+  margin: 24px auto;
+  background-color: var(--colors-blank);
+  border-radius: 10px;
+  box-shadow: rgb(0 0 0 / 5%) 6px 6px 54px;
+  overflow-x: auto;
+
+  h2 {
+    margin-bottom: 16px;
+    font-size: 1.4rem;
+    color: var(--colors-darkNavy);
+  }
+
+    button {
+    background-color: var(--colors-darkNavy);
+    color: var(--colors-blank);
+    min-height: 40px;
+    min-width: 120px;
+    border-radius: 50px;
+    border-width: 2px;
+    border: none;
+    padding: 0px 22px;
+    cursor: pointer;
+
+    &:hover {
+      filter: saturate(1.4);
+    }
+
+    &:focus:not(:focus-visible) {
+      outline: none;
+    }
+    &:focus-visible {
+      outline: none;
+      box-shadow: rgb(255 255 255) 0px 0px 0px 3px,
+        rgb(98 77 227) 0px 0px 0px 5px;
+    }
+  }
+`;

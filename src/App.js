@@ -1,8 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import EmploymentCreationApp from './Employment_Creation/App';
-import CompanyCreationApp from './Company_Creation/App';
-import { StyledLinkButton, RouteContainer, GlobalStyle, FormArea, HomeButton } from './App.styled';
+import EmploymentCreationApp from './Employment_Creation/EmploymentCreationApp';
+import CompanyCreationApp from './Company_Creation/CompanyCreationApp';
+import CostCalculatorApp from './Cost_Calculator/CostCalculatorApp';
+import { StyledLinkButton, RouteContainer, GlobalStyle, FormArea, HomeButton, ResultArea } from './App.styled';
 
 function App() {
   return (
@@ -14,11 +15,12 @@ function App() {
             <Route 
               path="/" 
               element={
-                <FormArea>
+                <ResultArea>
                   <h1>Experience Remote Embedded</h1>
                   <div style={{ margin: '20px 0', display: 'flex', gap: '10px' }}>
                     <StyledLinkButton to="/create-company">Create a Company</StyledLinkButton>
                     <StyledLinkButton to="/create-employment">Create Employment</StyledLinkButton>
+                    <StyledLinkButton to="/cost-calculator">Cost Calculator</StyledLinkButton> 
                   </div>
                   {/* Static Section for Overview */}
                   <section style={{ marginTop: '40px' }}>
@@ -59,6 +61,7 @@ function App() {
                     <ul>
                       <li><strong>Company Creation:</strong> Demonstrates how a new company can be created within the Remote system.</li>
                       <li><strong>Employment Creation:</strong> Shows how to set up employment for employees under a created company.</li>
+                      <li><strong>Cost Calculator:</strong> Provides an interface for estimating the cost of employment in different countries, including salary, benefits, and more.</li>
                     </ul>
                     <p>
                       These flows represent the employer's journey up to the point where the employee receives a self-enrollment email. 
@@ -78,11 +81,12 @@ function App() {
                       compliant experience for managing companies and employment relationships globally.
                     </p>
                   </section>
-                </FormArea>
+                </ResultArea>
               } 
             />
             <Route path="/create-company" element={<CompanyCreationApp />} />
             <Route path="/create-employment" element={<EmploymentCreationApp />} />
+            <Route path="/cost-calculator" element={<CostCalculatorApp />}/>
           </Routes>
         </div>
       </Router>

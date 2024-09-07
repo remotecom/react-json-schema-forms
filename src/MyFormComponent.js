@@ -15,7 +15,7 @@ import {
   Hint,
   Error,
 } from "./App.styled.js";
-import { fieldsMapConfig } from "./FormFields";
+import { fieldsMapConfig } from "./FormFields.js";
 
 const COMPONENT_KEY = "Component";
 

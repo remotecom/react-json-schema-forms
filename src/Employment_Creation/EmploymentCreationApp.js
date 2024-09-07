@@ -1,9 +1,10 @@
 // src/Employment_Creation/App.js
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
-import MyFormComponent from '../MyFormComponent';  // Update path
-import DynamicForm from '../DynamicForm';  // Update path
-import CredsForm from '../CredsForm';  // Update path
+import { getAccessToken } from '../utils/authUtils.js';  // Import the utility function
+import MyFormComponent from '../MyFormComponent.js';  // Update path
+import DynamicForm from '../DynamicForm.js';  // Update path
+import CredsForm from '../CredsForm.js';  // Update path
 import { GlobalStyle, FormArea, Error, HomeButton } from '../App.styled.js';  // Update path
 import * as Yup from 'yup';
 
@@ -24,48 +25,14 @@ const EmploymentCreationApp = () => {
     gatewayUrl: process.env.REACT_APP_GATEWAY_URL || '',
   });
 
-  // Fetch Access Token Function
-  const getAccessToken = useCallback(async () => {
-    let cachedToken = null;
-    let tokenExpiry = null;
-
-    if (cachedToken && tokenExpiry && new Date() < tokenExpiry) {
-      return cachedToken;
-    }
-
-    const { clientId, clientSecret, refreshToken, gatewayUrl } = creds;
-
-    if (!clientId || !clientSecret || !refreshToken || !gatewayUrl) {
-      console.error('Missing credentials.');
-      setError(`Error fetching form data: Missing credentials.`);
-      setIsLoading(false);
-      return null;
-    }
-
-    const encodedCredentials = btoa(`${clientId}:${clientSecret}`);
+  // Fetch Access Token using the utility function
+  const fetchAccessToken = useCallback(async () => {
     try {
-      const response = await axios.post(
-        `${gatewayUrl}/auth/oauth2/token`,
-        new URLSearchParams({
-          grant_type: 'refresh_token',
-          refresh_token: refreshToken,
-        }),
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Authorization: `Basic ${encodedCredentials}`,
-          },
-        }
-      );
-
-      cachedToken = response.data.access_token;
-      tokenExpiry = new Date(new Date().getTime() + 1000 * 60 * 59); // Set expiry for 59 minutes later
-
-      return cachedToken;
-    } catch (error) {
-      console.error('Error fetching access token:', error);
-      setError(`Error fetching form data: Error fetching access token:`);
-      setIsLoading(false);
+      const token = await getAccessToken(creds, setError, setIsLoading);
+      setAccessToken(token);
+      return token;
+    } catch (err) {
+      // Error is already handled within getAccessToken
       return null;
     }
   }, [creds]);
@@ -73,19 +40,15 @@ const EmploymentCreationApp = () => {
   const fetchSchema = useCallback(async (endpoint) => {
     setIsLoading(true);
     setError(null);
-    const token = await getAccessToken();
+    const token = await fetchAccessToken();
 
     if (token) {
-      setAccessToken(token);
       try {
-        const response = await axios.get(
-          `${creds.gatewayUrl}${endpoint}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${creds.gatewayUrl}${endpoint}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setJsonSchema(response.data.data);
       } catch (error) {
         console.error('Error fetching JSON schema:', error);
@@ -94,7 +57,7 @@ const EmploymentCreationApp = () => {
         setIsLoading(false);
       }
     }
-  }, [creds.gatewayUrl, getAccessToken]);
+  }, [creds.gatewayUrl, fetchAccessToken]);
 
   useEffect(() => {
     if (initialFormValues && !isContractDetails) {
@@ -117,19 +80,16 @@ const EmploymentCreationApp = () => {
       setError(null);
 
       if (!isContractDetails) {
+        const basicInformation = {
+          ...jsonValues,  // Spread all values from jsonValues
+        };
+  
         const postResponse = await axios.post(
           `${creds.gatewayUrl}/v1/employments`,
           {
-            basic_information: {
-              email: jsonValues.email,
-              has_seniority_date: jsonValues.has_seniority_date,
-              job_title: jsonValues.job_title,
-              name: jsonValues.name,
-              provisional_start_date: jsonValues.provisional_start_date,
-            },
+            basic_information: basicInformation, // Pass the dynamically built basic information
             country_code: initialFormValues.country_code,
             type: initialFormValues.type,
-            pricing_plan: initialFormValues.pricing_plan,
           },
           {
             headers: {
@@ -138,7 +98,7 @@ const EmploymentCreationApp = () => {
             },
           }
         );
-
+  
         if (postResponse.status === 201) {
           const newEmploymentId = postResponse.data.data.employment.id;
           setEmploymentId(newEmploymentId);
@@ -268,7 +228,6 @@ const EmploymentCreationApp = () => {
               <div>Loading...</div>
             ) : submissionStatus ? (
               <FormArea>
-                
                 {error && <Error>{error}</Error>}
                 <h2>{submissionStatus}</h2>
                 {error && <Error>{error}</Error>}
@@ -277,7 +236,6 @@ const EmploymentCreationApp = () => {
             ) : (
               <FormArea>
                 <h1>Employment Information Form</h1>
-                
                 {jsonSchema && (
                   <MyFormComponent
                     jsonSchema={jsonSchema}

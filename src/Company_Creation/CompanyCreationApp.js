@@ -1,9 +1,12 @@
+// src/Company_Creation/App.js
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
-import MyFormComponent from '../MyFormComponent';  // Update path
-import DynamicForm from '../DynamicForm';  // Update path
-import CredsForm from '../CredsForm';  // Update path
-import { GlobalStyle, FormArea, Error, HomeButton } from '../App.styled.js';  // Update path
+import { getClientCredentialsToken } from '../utils/authUtils.js';  // Import the utility function
+import MyFormComponent from '../MyFormComponent.js';  // Update path
+import DynamicForm from '../DynamicForm.js';  // Update path
+import CredsForm from '../CredsForm.js';  // Update path
+import DisplayResult from '../utils/DisplayResult'; 
+import { GlobalStyle, FormArea, Error, ResultArea,HomeButton } from '../App.styled.js';  // Update path
 import * as Yup from 'yup';
 
 const CompanyCreationApp = () => {
@@ -23,39 +26,14 @@ const CompanyCreationApp = () => {
     gatewayUrl: process.env.REACT_APP_GATEWAY_URL || '',
   });
 
-  const getAccessToken = useCallback(async () => {
-    const { clientId, clientSecret, gatewayUrl } = creds;
-
-    if (!clientId || !clientSecret || !gatewayUrl) {
-      console.error('Missing credentials.');
-      setError(`Error fetching form data: Missing credentials.`);
-      setIsLoading(false);
-      return null;
-    }
-
-    const encodedCredentials = btoa(`${clientId}:${clientSecret}`);
+  // Fetch Access Token using the utility function
+  const fetchAccessToken = useCallback(async () => {
     try {
-      const response = await axios.post(
-        `${gatewayUrl}/auth/oauth2/token`,
-        new URLSearchParams({
-          grant_type: 'client_credentials',
-        }),
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Authorization: `Basic ${encodedCredentials}`,
-          },
-        }
-      );
-
-      const token = response.data.access_token;
+      const token = await getClientCredentialsToken(creds, setError, setIsLoading);
       setAccessToken(token);
-
       return token;
-    } catch (error) {
-      console.error('Error fetching access token:', error);
-      setError(`Error fetching form data: Error fetching access token:`);
-      setIsLoading(false);
+    } catch (err) {
+      // Error is already handled within getClientCredentialsToken
       return null;
     }
   }, [creds]);
@@ -63,19 +41,15 @@ const CompanyCreationApp = () => {
   const fetchSchema = useCallback(async (endpoint) => {
     setIsLoading(true);
     setError(null);
-    const token = await getAccessToken();
+    const token = await fetchAccessToken();
 
     if (token) {
-      setAccessToken(token);
       try {
-        const response = await axios.get(
-          `${creds.gatewayUrl}${endpoint}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${creds.gatewayUrl}${endpoint}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setJsonSchema(response.data.data);
       } catch (error) {
         console.error('Error fetching JSON schema:', error);
@@ -84,7 +58,7 @@ const CompanyCreationApp = () => {
         setIsLoading(false);
       }
     }
-  }, [creds.gatewayUrl, getAccessToken]);
+  }, [creds.gatewayUrl, fetchAccessToken]);
 
   useEffect(() => {
     if (initialFormValues && !isAddressDetails) {
@@ -250,17 +224,14 @@ const CompanyCreationApp = () => {
             {isLoading ? (
               <div>Loading...</div>
             ) : submissionStatus ? (
-              <FormArea>
-                {error && <Error>{error}</Error>}
-                <h2>{submissionStatus}</h2>
-                {responseData && (
-                  <div>
-                    <h3>API Response:</h3>
-                    <pre>{JSON.stringify(responseData, null, 2)}</pre>
-                  </div>
-                )}
-                <button onClick={handleStartOver}>Start Over</button>
-              </FormArea>
+              <ResultArea>
+              {error && <Error>{error}</Error>}
+              <h2>{submissionStatus}</h2>
+              {responseData && (
+                <DisplayResult data={responseData} />  
+              )}
+              <button onClick={handleStartOver}>Start Over</button>
+            </ResultArea>
             ) : (
               <FormArea>
                 <h1>Company Information Form</h1>
