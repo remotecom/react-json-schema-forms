@@ -14,17 +14,15 @@ import {
   Label,
   Hint,
   Error,
-} from "./App.styled.js";
-import { fieldsMapConfig } from "./FormFields.js";
+} from "./App.styled.jsx";
+import { fieldsMapConfig } from "./FormFields.jsx";
 
 const COMPONENT_KEY = "Component";
 
 // Function to check if a field has a forced value
 function hasForcedValue(field) {
   return (
-    field.const !== undefined &&
-    field.const === field.default &&
-    !field.options
+    field.const !== undefined && field.const === field.default && !field.options
   );
 }
 
@@ -42,22 +40,20 @@ function getPrefilledValues(fields, initialValues) {
   }, {});
 }
 
-
-
 function formValuesToJsonValues(values, fields) {
   const fieldValueTransform = {
     text: (val) => val,
     number: (val) => (val === "" ? val : parseFloat(val)),
     money: (val) => (val === "" ? null : val * 100),
     integer: (val) => (val === "" ? null : parseInt(val)),
-    boolean: (val) => (val === "true" || val === true),
+    boolean: (val) => val === "true" || val === true,
     email: (val) => val,
     textarea: (val) => val,
     select: (val) => val,
     radio: (val) => val,
-    checkbox: (val, fieldsetFields,fieldProps) => {
+    checkbox: (val, fieldsetFields, fieldProps) => {
       // Ensure field is defined and has a const property
-      if (fieldProps && typeof fieldProps === 'object') {
+      if (fieldProps && typeof fieldProps === "object") {
         if (typeof val === "boolean") {
           return val ? fieldProps.const : null;
         }
@@ -71,39 +67,59 @@ function formValuesToJsonValues(values, fields) {
 
       const fieldsetValues = {};
       Object.keys(val).forEach((key) => {
-          const subField = fieldsetFields.find((f) => f.name === key);
-          if (subField) {
-            const subFieldValue = fieldValueTransform[subField.inputType]?.(val[key], subField);
-            if (subFieldValue !== "" && subFieldValue !== null && subFieldValue !== undefined) {
-              fieldsetValues[key] = subFieldValue;
-            }
+        const subField = fieldsetFields.find((f) => f.name === key);
+        if (subField) {
+          const subFieldValue = fieldValueTransform[subField.inputType]?.(
+            val[key],
+            subField
+          );
+          if (
+            subFieldValue !== "" &&
+            subFieldValue !== null &&
+            subFieldValue !== undefined
+          ) {
+            fieldsetValues[key] = subFieldValue;
           }
+        }
       });
 
       return Object.keys(fieldsetValues).length > 0 ? fieldsetValues : null;
-    }
+    },
   };
 
   const jsonValues = {};
 
-  fields.forEach(({ name, inputType, fields: fieldsetFields, ...fieldProps }) => {
-    const formValue = values[name];
-    const transformedValue = fieldValueTransform[inputType]?.(formValue,fieldsetFields, fieldProps);
-    const valueToUse =
-      transformedValue === null || transformedValue !== undefined
-        ? transformedValue
-        : formValue;
+  fields.forEach(
+    ({ name, inputType, fields: fieldsetFields, ...fieldProps }) => {
+      const formValue = values[name];
+      const transformedValue = fieldValueTransform[inputType]?.(
+        formValue,
+        fieldsetFields,
+        fieldProps
+      );
+      const valueToUse =
+        transformedValue === null || transformedValue !== undefined
+          ? transformedValue
+          : formValue;
 
-    if (valueToUse !== "" && valueToUse !== null && valueToUse !== undefined) {
-      jsonValues[name] = valueToUse;
+      if (
+        valueToUse !== "" &&
+        valueToUse !== null &&
+        valueToUse !== undefined
+      ) {
+        jsonValues[name] = valueToUse;
+      }
     }
-  });
+  );
 
   return jsonValues;
 }
 
-
-export default function MyFormComponent({ jsonSchema, onSubmit, isContractDetails }) {
+export default function MyFormComponent({
+  jsonSchema,
+  onSubmit,
+  isContractDetails,
+}) {
   const [modifiedSchema, setModifiedSchema] = useState(null);
 
   useEffect(() => {
@@ -143,9 +159,9 @@ export default function MyFormComponent({ jsonSchema, onSubmit, isContractDetail
   }
 
   function handleFormSubmit(formValues) {
-    console.log('Form values before casting:', formValues);
+    console.log("Form values before casting:", formValues);
     const jsonValues = formValuesToJsonValues(formValues, fields);
-    console.log('Form values after casting:', jsonValues);
+    console.log("Form values after casting:", jsonValues);
     onSubmit(jsonValues);
   }
 
