@@ -1,11 +1,11 @@
 // src/Employment_Creation/App.js
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import { getAccessToken } from "@/utils/authUtils.js"; // Import the utility function
-import MyFormComponent from "@/MyFormComponent.jsx"; // Update path
-import DynamicForm from "@/DynamicForm.jsx"; // Update path
-import CredsForm from "@/CredsForm.jsx"; // Update path
-import { GlobalStyle, FormArea, Error, HomeButton } from "@/App.styled.jsx"; // Update path
+import { getAccessToken } from "@/utils/authUtils.js";
+import MyFormComponent from "@/MyFormComponent.jsx";
+import DynamicForm from "@/DynamicForm.jsx";
+import CredsForm from "@/CredsForm.jsx";
+import { GlobalStyle, FormArea, Error, HomeButton } from "@/App.styled.jsx";
 import * as Yup from "yup";
 
 const EmploymentCreationApp = () => {

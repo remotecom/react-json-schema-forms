@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import { getClientCredentialsToken } from "@/utils/authUtils.js";
+import { getClientCredentialsToken } from "../../utils/authUtils.js";
 import DynamicForm from "@/DynamicForm.jsx";
 import CredsForm from "@/CredsForm.jsx";
 import DisplayResult from "@/utils/DisplayResult.jsx";

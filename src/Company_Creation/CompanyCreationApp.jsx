@@ -1,18 +1,17 @@
-// src/Company_Creation/App.js
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import { getClientCredentialsToken } from "../utils/authUtils.js"; // Import the utility function
-import MyFormComponent from "../MyFormComponent.jsx"; // Update path
-import DynamicForm from "../DynamicForm.jsx"; // Update path
-import CredsForm from "../CredsForm.jsx"; // Update path
-import DisplayResult from "../utils/DisplayResult.jsx";
+import { getClientCredentialsToken } from "@/utils/authUtils.js";
+import MyFormComponent from "@/MyFormComponent.jsx";
+import DynamicForm from "@/DynamicForm.jsx";
+import CredsForm from "@/CredsForm.jsx";
+import DisplayResult from "@/utils/DisplayResult.jsx";
 import {
   GlobalStyle,
   FormArea,
   Error,
   ResultArea,
   HomeButton,
-} from "../App.styled.jsx"; // Update path
+} from "../App.styled.jsx";
 import * as Yup from "yup";
 
 const credentials = {
