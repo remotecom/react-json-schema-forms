@@ -11,7 +11,7 @@ import {
   FieldsetRadioStyled,
   CheckboxField,
   RadioDescription,
-} from "./App.styled.js";
+} from "./App.styled.jsx";
 import * as Dialog from "@radix-ui/react-dialog";
 
 // Helper component to render descriptions with support for help center dialogs
@@ -56,7 +56,7 @@ function FieldText({ type, name, label, description, meta }) {
       <Description description={description} helpCenter={meta?.helpCenter} />
       <Error>
         <FormikErrorMessage name={name}>
-          {(msg) => meta?.['x-jsf-errorMessage'] || msg}
+          {(msg) => meta?.["x-jsf-errorMessage"] || msg}
         </FormikErrorMessage>
       </Error>
     </div>
@@ -75,7 +75,7 @@ function FieldCheckbox({ type, name, label, description, meta }) {
         <Description description={description} helpCenter={meta?.helpCenter} />
         <Error>
           <FormikErrorMessage name={name}>
-            {(msg) => meta?.['x-jsf-errorMessage'] || msg}
+            {(msg) => meta?.["x-jsf-errorMessage"] || msg}
           </FormikErrorMessage>
         </Error>
       </div>
@@ -92,7 +92,7 @@ function FieldTextarea({ name, label, description, meta }) {
       <Description description={description} helpCenter={meta?.helpCenter} />
       <Error>
         <FormikErrorMessage name={name}>
-          {(msg) => meta?.['x-jsf-errorMessage'] || msg}
+          {(msg) => meta?.["x-jsf-errorMessage"] || msg}
         </FormikErrorMessage>
       </Error>
     </div>
@@ -117,7 +117,7 @@ function FieldSelect({ name, label, description, options, meta }) {
       <Description description={description} helpCenter={meta?.helpCenter} />
       <Error>
         <FormikErrorMessage name={name}>
-          {(msg) => meta?.['x-jsf-errorMessage'] || msg}
+          {(msg) => meta?.["x-jsf-errorMessage"] || msg}
         </FormikErrorMessage>
       </Error>
     </div>
@@ -141,7 +141,7 @@ function FieldRadio({ name, label, description, options, meta }) {
       ))}
       <Error>
         <FormikErrorMessage name={name}>
-          {(msg) => meta?.['x-jsf-errorMessage'] || msg}
+          {(msg) => meta?.["x-jsf-errorMessage"] || msg}
         </FormikErrorMessage>
       </Error>
     </FieldsetRadioStyled>
@@ -157,7 +157,7 @@ function FieldEmail({ name, label, description, meta }) {
       <Description description={description} helpCenter={meta?.helpCenter} />
       <Error>
         <FormikErrorMessage name={name}>
-          {(msg) => meta?.['x-jsf-errorMessage'] || msg}
+          {(msg) => meta?.["x-jsf-errorMessage"] || msg}
         </FormikErrorMessage>
       </Error>
     </div>
@@ -180,7 +180,7 @@ function FieldsetHidden({ name, label, description, fields }) {
           return null;
         }
 
-        if (field.type === 'hidden') {
+        if (field.type === "hidden") {
           return (
             <FormikField key={field.name} type="hidden" name={field.name} />
           );

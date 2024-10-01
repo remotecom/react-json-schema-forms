@@ -1,20 +1,20 @@
 // src/InitialForm.js
-import React from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { FormArea, Label, Button, Error } from '../App.styled.js';
+import React from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { FormArea, Label, Button, Error } from "../App.styled.js";
 
 const InitialForm = ({ onSubmit }) => {
   const formik = useFormik({
     initialValues: {
-      countryCode: '',
-      employeeType: '',
-      pricingPlan: '',
+      countryCode: "",
+      employeeType: "",
+      pricingPlan: "",
     },
     validationSchema: Yup.object({
-      countryCode: Yup.string().required('Country code is required'),
-      employeeType: Yup.string().required('Employee type is required'),
-      pricingPlan: Yup.string().required('Pricing plan is required'),
+      countryCode: Yup.string().required("Country code is required"),
+      employeeType: Yup.string().required("Employee type is required"),
+      pricingPlan: Yup.string().required("Pricing plan is required"),
     }),
     onSubmit: (values) => {
       onSubmit(values);

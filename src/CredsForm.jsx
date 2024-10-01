@@ -1,14 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-import { CredsFormWrapper, FormArea, Label, Error, ToggleButton } from './App.styled.js';
+import React, { useState, useEffect } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import {
+  CredsFormWrapper,
+  FormArea,
+  Label,
+  Error,
+  ToggleButton,
+} from "./App.styled.jsx";
 
 const CredsForm = ({ onSubmit, initialValues }) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   useEffect(() => {
     // Retrieve form data from localStorage if available
-    const savedValues = JSON.parse(localStorage.getItem('credsFormData'));
+    const savedValues = JSON.parse(localStorage.getItem("credsFormData"));
     if (savedValues) {
       formik.setValues(savedValues);
     }
@@ -21,22 +27,24 @@ const CredsForm = ({ onSubmit, initialValues }) => {
   const formik = useFormik({
     initialValues: initialValues,
     validationSchema: Yup.object({
-      clientId: Yup.string().required('Client ID is required'),
-      clientSecret: Yup.string().required('Client Secret is required'),
-      refreshToken: Yup.string().required('Refresh Token is required'),
-      gatewayUrl: Yup.string().url('Invalid URL').required('Gateway URL is required'),
+      clientId: Yup.string().required("Client ID is required"),
+      clientSecret: Yup.string().required("Client Secret is required"),
+      refreshToken: Yup.string().required("Refresh Token is required"),
+      gatewayUrl: Yup.string()
+        .url("Invalid URL")
+        .required("Gateway URL is required"),
     }),
     onSubmit: (values) => {
       // Save form data to localStorage
-      localStorage.setItem('credsFormData', JSON.stringify(values));
+      localStorage.setItem("credsFormData", JSON.stringify(values));
       onSubmit(values);
     },
   });
 
   return (
-    <CredsFormWrapper className={isCollapsed ? 'collapsed' : ''}>
+    <CredsFormWrapper className={isCollapsed ? "collapsed" : ""}>
       <ToggleButton className="toggle" onClick={toggleForm}>
-        {isCollapsed ? 'Show Credentials' : 'Hide Credentials'}
+        {isCollapsed ? "Show Credentials" : "Hide Credentials"}
       </ToggleButton>
       {!isCollapsed && (
         <FormArea>
