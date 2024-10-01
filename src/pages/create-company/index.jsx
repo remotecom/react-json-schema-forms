@@ -1,17 +1,12 @@
+// src/Company_Creation/App.js
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import { getClientCredentialsToken } from "@/utils/authUtils.js";
-import MyFormComponent from "@/MyFormComponent.jsx";
-import DynamicForm from "@/DynamicForm.jsx";
-import CredsForm from "@/CredsForm.jsx";
+import { getClientCredentialsToken } from "@/utils/auth-utils.js";
+import Form from "@/components/form/Form.jsx";
+import DynamicForm from "@/components/form/DynamicForm.jsx";
+import { CredsForm } from "@/components/CredentialsForm.jsx";
 import DisplayResult from "@/utils/DisplayResult.jsx";
-import {
-  GlobalStyle,
-  FormArea,
-  Error,
-  ResultArea,
-  HomeButton,
-} from "../App.styled.jsx";
+import { FormArea, Error, ResultArea, HomeButton } from "@/App.styled.jsx";
 import * as Yup from "yup";
 
 const credentials = {
@@ -21,7 +16,7 @@ const credentials = {
   gatewayUrl: import.meta.env.REACT_APP_GATEWAY_URL || "",
 };
 
-const CompanyCreationApp = () => {
+export function CompanyCreationPage() {
   const [jsonSchema, setJsonSchema] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
   const [companyId, setCompanyId] = useState(null);
@@ -231,7 +226,6 @@ const CompanyCreationApp = () => {
 
   return (
     <>
-      <GlobalStyle />
       <div className="App">
         <HomeButton to="/">Home</HomeButton>
         <CredsForm initialValues={creds} onSubmit={handleCredsSubmit} />
@@ -257,10 +251,7 @@ const CompanyCreationApp = () => {
               <FormArea>
                 <h1>Company Information Form</h1>
                 {jsonSchema && (
-                  <MyFormComponent
-                    jsonSchema={jsonSchema}
-                    onSubmit={handleSubmit}
-                  />
+                  <Form jsonSchema={jsonSchema} onSubmit={handleSubmit} />
                 )}
                 {error && <Error>{error}</Error>}
               </FormArea>
@@ -270,6 +261,4 @@ const CompanyCreationApp = () => {
       </div>
     </>
   );
-};
-
-export default CompanyCreationApp;
+}

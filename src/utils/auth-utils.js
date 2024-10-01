@@ -1,4 +1,3 @@
-// src/utils/authUtils.js
 import axios from "axios";
 
 export const getAccessToken = async (

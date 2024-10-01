@@ -7,9 +7,9 @@ import {
   Label,
   Error,
   ToggleButton,
-} from "./App.styled.jsx";
+} from "@/App.styled.jsx";
 
-const CredsForm = ({ onSubmit, initialValues }) => {
+export function CredsForm({ onSubmit, initialValues }) {
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   useEffect(() => {
@@ -107,6 +107,4 @@ const CredsForm = ({ onSubmit, initialValues }) => {
       )}
     </CredsFormWrapper>
   );
-};
-
-export default CredsForm;
+}

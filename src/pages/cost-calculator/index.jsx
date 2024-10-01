@@ -1,12 +1,12 @@
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import { getClientCredentialsToken } from "@/utils/authUtils.js";
-import DynamicForm from "@/DynamicForm.jsx";
-import CredsForm from "@/CredsForm.jsx";
+import { getClientCredentialsToken } from "@/utils/auth-utils.js";
+import DynamicForm from "@/components/form/DynamicForm.jsx";
+import { CredsForm } from "@/components/CredentialsForm.jsx";
 import DisplayResult from "@/utils/DisplayResult.jsx";
-import { GlobalStyle, ResultArea, Error, HomeButton } from "@/App.styled.jsx";
+import { ResultArea, Error, HomeButton } from "@/App.styled.jsx";
 
-const CostCalculatorApp = () => {
+export function CostCalculatorPage() {
   const [countries, setCountries] = useState([]);
   const [accessToken, setAccessToken] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -228,7 +228,6 @@ const CostCalculatorApp = () => {
 
   return (
     <>
-      <GlobalStyle />
       <div className="App">
         <HomeButton to="/">Home</HomeButton>
         <CredsForm initialValues={creds} onSubmit={handleCredsSubmit} />
@@ -256,6 +255,4 @@ const CostCalculatorApp = () => {
       </div>
     </>
   );
-};
-
-export default CostCalculatorApp;
+}

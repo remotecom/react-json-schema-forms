@@ -11,7 +11,7 @@ import {
   FieldsetRadioStyled,
   CheckboxField,
   RadioDescription,
-} from "./App.styled.jsx";
+} from "@/App.styled.jsx";
 import * as Dialog from "@radix-ui/react-dialog";
 
 // Helper component to render descriptions with support for help center dialogs
@@ -99,7 +99,6 @@ function FieldTextarea({ name, label, description, meta }) {
   );
 }
 
-// Field component for select dropdown
 function FieldSelect({ name, label, description, options, meta }) {
   return (
     <div key={name}>

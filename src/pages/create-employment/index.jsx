@@ -1,14 +1,13 @@
-// src/Employment_Creation/App.js
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
-import { getAccessToken } from "@/utils/authUtils.js";
-import MyFormComponent from "@/MyFormComponent.jsx";
-import DynamicForm from "@/DynamicForm.jsx";
-import CredsForm from "@/CredsForm.jsx";
-import { GlobalStyle, FormArea, Error, HomeButton } from "@/App.styled.jsx";
+import { getAccessToken } from "@/utils/auth-utils.js";
+import Form from "@/components/form/Form.jsx";
+import DynamicForm from "@/components/form/DynamicForm.jsx";
+import { CredsForm } from "@/components/CredentialsForm.jsx";
+import { FormArea, Error, HomeButton } from "@/App.styled.jsx";
 import * as Yup from "yup";
 
-const EmploymentCreationApp = () => {
+export function EmploymentCreationPage() {
   const [jsonSchema, setJsonSchema] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
   const [employmentId, setEmploymentId] = useState(null);
@@ -231,7 +230,6 @@ const EmploymentCreationApp = () => {
 
   return (
     <>
-      <GlobalStyle />
       <div className="App">
         <HomeButton to="/">Home</HomeButton>
         <CredsForm initialValues={creds} onSubmit={handleCredsSubmit} />
@@ -257,7 +255,7 @@ const EmploymentCreationApp = () => {
               <FormArea>
                 <h1>Employment Information Form</h1>
                 {jsonSchema && (
-                  <MyFormComponent
+                  <Form
                     jsonSchema={jsonSchema}
                     onSubmit={handleSubmit}
                     isContractDetails={isContractDetails}
@@ -271,6 +269,4 @@ const EmploymentCreationApp = () => {
       </div>
     </>
   );
-};
-
-export default EmploymentCreationApp;
+}

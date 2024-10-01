@@ -1,5 +1,5 @@
-import styled, { createGlobalStyle } from 'styled-components';
-import { Link } from 'react-router-dom';
+import styled, { createGlobalStyle } from "styled-components";
+import { Link } from "react-router-dom";
 
 export const GlobalStyle = createGlobalStyle`
   :root {
@@ -117,7 +117,7 @@ export const FormArea = styled.div`
     }
   }
 
-    button {
+  button {
     background-color: var(--colors-darkNavy);
     color: var(--colors-blank);
     min-height: 40px;
@@ -142,7 +142,7 @@ export const FormArea = styled.div`
     }
   }
 
-    Button {
+  Button {
     background-color: var(--colors-darkNavy);
     color: var(--colors-blank);
     min-height: 40px;
@@ -167,8 +167,6 @@ export const FormArea = styled.div`
     }
   }
 `;
-
-
 
 export const Label = styled.label`
   display: block;
@@ -253,22 +251,22 @@ export const CredsFormWrapper = styled.div`
 `;
 
 export const ToggleButton = styled.button`
-   background-color: var(--colors-darkNavy);
-    color: var(--colors-blank);
-    min-height: 40px;
-    min-width: 120px;
-    border-radius: 50px;
-    border-width: 2px;
-    border: none;
-    padding: 0px 22px;
-    cursor: pointer;
+  background-color: var(--colors-darkNavy);
+  color: var(--colors-blank);
+  min-height: 40px;
+  min-width: 120px;
+  border-radius: 50px;
+  border-width: 2px;
+  border: none;
+  padding: 0px 22px;
+  cursor: pointer;
 
-    &:hover {
-      filter: saturate(1.4);
-    } 
+  &:hover {
+    filter: saturate(1.4);
+  }
 
   &::after {
-    content: '${props => (props.isCollapsed ? '→' : '↓')}';
+    content: "${(props) => (props.isCollapsed ? "→" : "↓")}";
     margin-left: 8px;
     transition: transform 0.3s ease;
   }
@@ -297,8 +295,7 @@ export const StyledLinkButton = styled(Link)`
 
   &:focus-visible {
     outline: none;
-    box-shadow: rgb(255 255 255) 0px 0px 0px 3px,
-      rgb(98 77 227) 0px 0px 0px 5px;
+    box-shadow: rgb(255 255 255) 0px 0px 0px 3px, rgb(98 77 227) 0px 0px 0px 5px;
   }
 `;
 export const RouteContainer = styled.div`
@@ -338,7 +335,7 @@ export const Section = styled.div`
   justify-content: flex-start;
   margin-bottom: 10px; /* Reduced to create a tighter layout */
   align-items: flex-start;
-  padding-left: ${({ level }) => (level > 1 ? `${(level - 1) * 20}px` : '0px')};
+  padding-left: ${({ level }) => (level > 1 ? `${(level - 1) * 20}px` : "0px")};
 `;
 
 export const Key = styled.div`
@@ -359,12 +356,11 @@ export const Value = styled.div`
 `;
 
 export const ArrayItem = styled.div`
-  padding-left: ${({ level }) => (level > 1 ? `${(level - 1) * 20}px` : '0px')};
+  padding-left: ${({ level }) => (level > 1 ? `${(level - 1) * 20}px` : "0px")};
   padding-top: 5px;
   padding-bottom: 5px;
   border-bottom: 1px solid var(--colors-linkWater);
 `;
-
 
 export const ResultArea = styled.div`
   display: flex;
@@ -384,7 +380,7 @@ export const ResultArea = styled.div`
     color: var(--colors-darkNavy);
   }
 
-    button {
+  button {
     background-color: var(--colors-darkNavy);
     color: var(--colors-blank);
     min-height: 40px;
