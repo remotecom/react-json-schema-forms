@@ -6,16 +6,8 @@ import {
   Field as FormikField,
   ErrorMessage as FormikErrorMessage,
 } from "formik";
-import {
-  GlobalStyle,
-  CreditsStyled,
-  Disclaimer,
-  FormArea,
-  Label,
-  Hint,
-  Error,
-} from "./App.styled.jsx";
-import { fieldsMapConfig } from "./FormFields.jsx";
+import { GlobalStyle, FormArea, Error } from "@/App.styled.jsx";
+import { fieldsMapConfig } from "@/components/form/Fields.jsx";
 
 const COMPONENT_KEY = "Component";
 

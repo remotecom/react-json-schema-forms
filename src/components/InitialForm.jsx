@@ -2,7 +2,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { FormArea, Label, Button, Error } from "../App.styled.js";
+import { FormArea, Label, Button, Error } from "@/App.styled.jsx";
 
 const InitialForm = ({ onSubmit }) => {
   const formik = useFormik({

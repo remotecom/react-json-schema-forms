@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { useFormik } from "formik";
 import PropTypes from "prop-types";
-import { FormArea, Label, Error } from "./App.styled.jsx";
+import { FormArea, Label, Error } from "@/App.styled.jsx";
 
 const DynamicForm = ({ fields, validationSchema, onSubmit }) => {
   const initialValues = useMemo(() => {
