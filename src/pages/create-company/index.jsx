@@ -53,7 +53,7 @@ export function CompanyCreationPage() {
 
       if (token) {
         try {
-          const response = await axios.get(`${creds.gatewayUrl}${endpoint}`, {
+          const response = await axios.get(endpoint, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -71,13 +71,13 @@ export function CompanyCreationPage() {
         }
       }
     },
-    [creds.gatewayUrl, fetchAccessToken]
+    [fetchAccessToken]
   );
 
   useEffect(() => {
     if (initialFormValues && !isAddressDetails) {
       fetchSchema(
-        `/v1/companies/schema?country_code=${initialFormValues.country_code}&form=address_details`
+        `/api/v1/companies/schema?country_code=${initialFormValues.country_code}&form=address_details`
       );
     }
   }, [fetchSchema, isAddressDetails, initialFormValues]);
@@ -111,7 +111,7 @@ export function CompanyCreationPage() {
       };
 
       const postResponse = await axios.post(
-        `${creds.gatewayUrl}/v1/companies${actionParam}`,
+        `/api/v1/companies${actionParam}`,
         payload,
         {
           headers: {
