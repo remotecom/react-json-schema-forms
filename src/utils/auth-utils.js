@@ -59,7 +59,7 @@ export const getClientCredentialsToken = async (
   const encodedCredentials = btoa(`${clientId}:${clientSecret}`);
   try {
     const response = await axios.post(
-      `${gatewayUrl}/auth/oauth2/token`,
+      `/api/auth/oauth2/token`,
       new URLSearchParams({
         grant_type: "client_credentials",
       }),
@@ -70,7 +70,6 @@ export const getClientCredentialsToken = async (
         },
       }
     );
-
     return response.data.access_token;
   } catch (error) {
     const errorMessage = `Error fetching form data: Error fetching access token: ${error.message}`;

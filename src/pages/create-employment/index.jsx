@@ -44,7 +44,7 @@ export function EmploymentCreationPage() {
 
       if (token) {
         try {
-          const response = await axios.get(`${creds.gatewayUrl}${endpoint}`, {
+          const response = await axios.get(endpoint, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -62,13 +62,13 @@ export function EmploymentCreationPage() {
         }
       }
     },
-    [creds.gatewayUrl, fetchAccessToken]
+    [fetchAccessToken]
   );
 
   useEffect(() => {
     if (initialFormValues && !isContractDetails) {
       fetchSchema(
-        `/v1/countries/${initialFormValues.country_code}/employment_basic_information`
+        `/api/v1/countries/${initialFormValues.country_code}/employment_basic_information`
       );
     }
   }, [fetchSchema, isContractDetails, initialFormValues]);
@@ -76,7 +76,7 @@ export function EmploymentCreationPage() {
   useEffect(() => {
     if (employmentId && isContractDetails) {
       fetchSchema(
-        `/v1/countries/${initialFormValues.country_code}/contract_details`
+        `/api/v1/countries/${initialFormValues.country_code}/contract_details`
       );
     }
   }, [employmentId, isContractDetails, fetchSchema, initialFormValues]);
@@ -95,7 +95,7 @@ export function EmploymentCreationPage() {
         };
 
         const postResponse = await axios.post(
-          `${creds.gatewayUrl}/v1/employments`,
+          `/api/v1/employments`,
           {
             basic_information: basicInformation, // Pass the dynamically built basic information
             country_code: initialFormValues.country_code,
@@ -116,7 +116,7 @@ export function EmploymentCreationPage() {
         }
       } else {
         const patchResponse = await axios.patch(
-          `${creds.gatewayUrl}/v1/employments/${employmentId}`,
+          `/api/v1/employments/${employmentId}`,
           {
             contract_details: {
               ...jsonValues,
@@ -137,7 +137,7 @@ export function EmploymentCreationPage() {
           if (initialFormValues.send_self_enrollment_invitation) {
             try {
               const inviteResponse = await axios.post(
-                `${creds.gatewayUrl}/v1/employments/${employmentId}/invite`,
+                `/api/v1/employments/${employmentId}/invite`,
                 {},
                 {
                   headers: {
