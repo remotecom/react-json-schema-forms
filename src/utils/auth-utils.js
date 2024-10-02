@@ -18,7 +18,7 @@ export const getAccessToken = async (
   const encodedCredentials = btoa(`${clientId}:${clientSecret}`);
   try {
     const response = await axios.post(
-      `${gatewayUrl}/auth/oauth2/token`,
+      "/api/auth/oauth2/token",
       new URLSearchParams({
         grant_type: "refresh_token",
         refresh_token: refreshToken,
@@ -59,7 +59,7 @@ export const getClientCredentialsToken = async (
   const encodedCredentials = btoa(`${clientId}:${clientSecret}`);
   try {
     const response = await axios.post(
-      `/api/auth/oauth2/token`,
+      "/api/auth/oauth2/token",
       new URLSearchParams({
         grant_type: "client_credentials",
       }),
