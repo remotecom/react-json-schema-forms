@@ -60,11 +60,14 @@ export function CostCalculatorPage() {
 
     if (token) {
       try {
-        const response = await axios.get(`/api/v1/cost-calculator/countries`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          `${creds.gatewayUrl}/v1/cost-calculator/countries`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setCountries(response.data.data);
       } catch (error) {
         console.error("Error fetching countries:", error);
@@ -146,7 +149,7 @@ export function CostCalculatorPage() {
 
     try {
       const response = await axios.post(
-        `/api/v1/cost-calculator/estimation`,
+        `${creds.gatewayUrl}/v1/cost-calculator/estimation`,
         payload,
         {
           headers: {
