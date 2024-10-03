@@ -4,8 +4,9 @@ import { getAccessToken } from "@/utils/auth-utils.js";
 import Form from "@/components/form/Form.jsx";
 import DynamicForm from "@/components/form/DynamicForm.jsx";
 import { CredsForm } from "@/components/CredentialsForm.jsx";
-import { FormArea, Error, HomeButton } from "@/App.styled.jsx";
+import { FormArea, Error } from "@/App.styled.jsx";
 import * as Yup from "yup";
+import { HomeButton } from "../../components/HomeButton";
 
 export function EmploymentCreationPage() {
   const [jsonSchema, setJsonSchema] = useState(null);
@@ -231,7 +232,7 @@ export function EmploymentCreationPage() {
   return (
     <>
       <div className="App">
-        <HomeButton to="/">Home</HomeButton>
+        <HomeButton to="/" />
         <CredsForm initialValues={creds} onSubmit={handleCredsSubmit} />
         {!initialFormValues ? (
           <DynamicForm

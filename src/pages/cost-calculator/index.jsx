@@ -4,7 +4,8 @@ import { getClientCredentialsToken } from "@/utils/auth-utils.js";
 import DynamicForm from "@/components/form/DynamicForm.jsx";
 import { CredsForm } from "@/components/CredentialsForm.jsx";
 import DisplayResult from "@/utils/DisplayResult.jsx";
-import { ResultArea, Error, HomeButton } from "@/App.styled.jsx";
+import { ResultArea, Error } from "@/App.styled.jsx";
+import { HomeButton } from "../../components/HomeButton";
 
 export function CostCalculatorPage() {
   const [countries, setCountries] = useState([]);
@@ -226,7 +227,7 @@ export function CostCalculatorPage() {
   return (
     <>
       <div className="App">
-        <HomeButton to="/">Home</HomeButton>
+        <HomeButton to="/" />
         <CredsForm initialValues={creds} onSubmit={handleCredsSubmit} />
         {formFields.length > 0 ? (
           <DynamicForm

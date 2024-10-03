@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export const GlobalStyle = createGlobalStyle`
   :root {
     --colors-linkWater: #F4F7FC;
-    --colors-darkNavy: #00183e;
+    --colors-darkNavy: #0061FF;
     --colors-darkBlue: #00234B;
     --colors-blank: #ffffff;
     --colors-bayoux: #525F7F;
@@ -304,20 +304,6 @@ export const RouteContainer = styled.div`
   border-radius: 10px;
   box-shadow: rgb(0 0 0 / 10%) 4px 4px 20px;
   margin-top: 20px;
-`;
-export const HomeButton = styled(Link)`
-  display: inline-block;
-  background-color: var(--colors-darkNavy);
-  color: var(--colors-blank);
-  padding: 10px 20px;
-  border-radius: 5px;
-  text-decoration: none;
-  font-weight: bold;
-  margin-bottom: 20px;
-
-  &:hover {
-    background-color: var(--colors-darkBlue);
-  }
 `;
 
 export const ResultContainer = styled.div`

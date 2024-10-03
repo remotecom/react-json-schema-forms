@@ -6,8 +6,9 @@ import Form from "@/components/form/Form.jsx";
 import DynamicForm from "@/components/form/DynamicForm.jsx";
 import { CredsForm } from "@/components/CredentialsForm.jsx";
 import DisplayResult from "@/utils/DisplayResult.jsx";
-import { FormArea, Error, ResultArea, HomeButton } from "@/App.styled.jsx";
+import { FormArea, Error, ResultArea } from "@/App.styled.jsx";
 import * as Yup from "yup";
+import { HomeButton } from "@/components/HomeButton";
 
 const credentials = {
   clientId: import.meta.env.REACT_APP_CLIENT_ID || "",
@@ -227,7 +228,7 @@ export function CompanyCreationPage() {
   return (
     <>
       <div className="App">
-        <HomeButton to="/">Home</HomeButton>
+        <HomeButton to="/" />
         <CredsForm initialValues={creds} onSubmit={handleCredsSubmit} />
         {!initialFormValues ? (
           <DynamicForm
