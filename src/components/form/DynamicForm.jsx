@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { useFormik } from "formik";
 import PropTypes from "prop-types";
 import { FormArea, Label, Error } from "@/App.styled.jsx";
@@ -41,43 +41,63 @@ const DynamicForm = ({ fields, validationSchema, onSubmit }) => {
 
   return (
     <FormArea>
-      <form onSubmit={formik.handleSubmit}>
+      <form className="form" onSubmit={formik.handleSubmit}>
         {fields.map((field) => (
           <div key={field.name}>
-            <Label>{field.label}</Label>
-            {field.type === "select" ? (
-              <select
-                name={field.name}
-                onChange={(event) => {
-                  formik.handleChange(event);
-                  if (field.onChange) field.onChange(event);
-                }}
-                value={formik.values[field.name]}
-              >
-                <option value="" disabled>
-                  Select {field.label}
-                </option>
-                {field.options &&
-                  field.options.map((option) => (
-                    <option key={option.value} value={option.value}>
-                      {option.label}
+            <Label>
+              {field.label}
+              {field.type === "checkbox" && (
+                <input
+                  className="ml-2"
+                  type={field.type}
+                  name={field.name}
+                  onChange={formik.handleChange}
+                  value={formik.values[field.name]}
+                />
+              )}
+            </Label>
+
+            {field.type !== "checkbox" && (
+              <>
+                {field.type === "select" ? (
+                  <select
+                    className="select"
+                    name={field.name}
+                    onChange={(event) => {
+                      formik.handleChange(event);
+                      if (field.onChange) field.onChange(event);
+                    }}
+                    value={formik.values[field.name]}
+                  >
+                    <option value="" disabled>
+                      Select {field.label}
                     </option>
-                  ))}
-              </select>
-            ) : (
-              <input
-                type={field.type}
-                name={field.name}
-                onChange={formik.handleChange}
-                value={formik.values[field.name]}
-              />
+                    {field.options &&
+                      field.options.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                  </select>
+                ) : (
+                  <input
+                    className="input"
+                    type={field.type}
+                    name={field.name}
+                    onChange={formik.handleChange}
+                    value={formik.values[field.name]}
+                  />
+                )}
+              </>
             )}
             {formik.errors[field.name] && formik.touched[field.name] ? (
               <Error>{formik.errors[field.name]}</Error>
             ) : null}
           </div>
         ))}
-        <button type="submit">Submit</button>
+        <button className="submit-button" type="submit">
+          Submit
+        </button>
       </form>
     </FormArea>
   );

@@ -52,7 +52,7 @@ function FieldText({ type, name, label, description, meta }) {
   return (
     <div key={name}>
       <Label htmlFor={name}>{label}</Label>
-      <FormikField type={type} name={name} id={name} />
+      <FormikField type={type} name={name} id={name} className="input" />
       <Description description={description} helpCenter={meta?.helpCenter} />
       <Error>
         <FormikErrorMessage name={name}>
@@ -88,7 +88,7 @@ function FieldTextarea({ name, label, description, meta }) {
   return (
     <div key={name}>
       <Label htmlFor={name}>{label}</Label>
-      <FormikField as="textarea" name={name} id={name} />
+      <FormikField as="textarea" name={name} id={name} className="textarea" />
       <Description description={description} helpCenter={meta?.helpCenter} />
       <Error>
         <FormikErrorMessage name={name}>
@@ -103,7 +103,13 @@ function FieldSelect({ name, label, description, options, meta }) {
   return (
     <div key={name}>
       <Label htmlFor={name}>{label}</Label>
-      <FormikField as="select" name={name} id={name} placeholder="select...">
+      <FormikField
+        as="select"
+        name={name}
+        id={name}
+        placeholder="select..."
+        className="select"
+      >
         <option disabled value="">
           Select...
         </option>

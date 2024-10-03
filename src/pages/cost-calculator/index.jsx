@@ -6,6 +6,56 @@ import { CredsForm } from "@/components/CredentialsForm.jsx";
 import DisplayResult from "@/utils/DisplayResult.jsx";
 import { ResultArea, Error } from "@/App.styled.jsx";
 import { HomeButton } from "../../components/HomeButton";
+import { Loading } from "@/components/Loading";
+
+const fields = [
+  {
+    name: "age",
+    label: "Age",
+    type: "number",
+    defaultValue: 30,
+  },
+  {
+    name: "annual_gross_salary",
+    label: "Annual Gross Salary in selected country's currency",
+    type: "number",
+    defaultValue: 150000,
+  },
+  {
+    name: "employment_term",
+    label: "Employment Term",
+    type: "select",
+    options: [
+      { value: "fixed", label: "Fixed" },
+      { value: "indefinite", label: "Permanent" },
+    ],
+    defaultValue: "fixed",
+  },
+  {
+    name: "title",
+    label: "Title",
+    type: "text",
+    defaultValue: "SA",
+  },
+  {
+    name: "regional_to_employer_exchange_rate",
+    label: "Regional to Employer Exchange Rate",
+    type: "text", // Changed to text to ensure it's treated as a string
+    defaultValue: "1", // Default value as a string
+  },
+  {
+    name: "include_benefits",
+    label: "Include Benefits",
+    type: "checkbox",
+    defaultValue: false,
+  },
+  {
+    name: "include_cost_breakdowns",
+    label: "Include Cost Breakdowns",
+    type: "checkbox",
+    defaultValue: false,
+  },
+];
 
 export function CostCalculatorPage() {
   const [countries, setCountries] = useState([]);
@@ -175,52 +225,7 @@ export function CostCalculatorPage() {
             defaultValue: "",
             onChange: handleCountryChange, // Attach the onChange handler
           },
-          {
-            name: "age",
-            label: "Age",
-            type: "number",
-            defaultValue: 30,
-          },
-          {
-            name: "annual_gross_salary",
-            label: "Annual Gross Salary in selected country's currency",
-            type: "number",
-            defaultValue: 150000,
-          },
-          {
-            name: "employment_term",
-            label: "Employment Term",
-            type: "select",
-            options: [
-              { value: "fixed", label: "Fixed" },
-              { value: "indefinite", label: "Permanent" },
-            ],
-            defaultValue: "fixed",
-          },
-          {
-            name: "title",
-            label: "Title",
-            type: "text",
-            defaultValue: "SA",
-          },
-          {
-            name: "regional_to_employer_exchange_rate",
-            label: "Regional to Employer Exchange Rate",
-            type: "text", // Changed to text to ensure it's treated as a string
-            defaultValue: "1", // Default value as a string
-          },
-          {
-            name: "include_benefits",
-            label: "Include Benefits",
-            type: "checkbox",
-            defaultValue: false,
-          },
-          {
-            name: "include_cost_breakdowns",
-            label: "Include Cost Breakdowns",
-            type: "checkbox",
-            defaultValue: false,
-          },
+          ...fields,
         ]
       : [];
 
@@ -229,25 +234,31 @@ export function CostCalculatorPage() {
       <div className="App">
         <HomeButton to="/" />
         <CredsForm initialValues={creds} onSubmit={handleCredsSubmit} />
-        {formFields.length > 0 ? (
+        {formFields.length > 0 && !result ? (
           <DynamicForm
             fields={formFields}
             onSubmit={handleSubmit}
             disableSubmit={Object.values(creds).some((value) => !value)}
           />
         ) : (
-          <div>
-            {isLoading
-              ? "Loading..."
-              : "Please fill out the credentials form to proceed."}
-          </div>
+          <>
+            {isLoading ? (
+              <Loading />
+            ) : (
+              <div className="text-center">
+                Please fill out the credentials form to proceed.
+              </div>
+            )}
+          </>
         )}
         {error && <Error>{error}</Error>}
         {result && (
           <ResultArea>
             <h2>Calculation Result</h2>
             <DisplayResult data={result.data} />
-            <button onClick={() => setResult(null)}>Start Over</button>
+            <button className="submit-button" onClick={() => setResult(null)}>
+              Start Over
+            </button>
           </ResultArea>
         )}
       </div>

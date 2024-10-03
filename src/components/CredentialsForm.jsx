@@ -48,10 +48,11 @@ export function CredsForm({ onSubmit, initialValues }) {
       </ToggleButton>
       {!isCollapsed && (
         <FormArea>
-          <form onSubmit={formik.handleSubmit}>
+          <form onSubmit={formik.handleSubmit} className="form">
             <div>
               <Label htmlFor="clientId">Client ID</Label>
               <input
+                className="input"
                 id="clientId"
                 name="clientId"
                 type="text"
@@ -65,6 +66,7 @@ export function CredsForm({ onSubmit, initialValues }) {
             <div>
               <Label htmlFor="clientSecret">Client Secret</Label>
               <input
+                className="input"
                 id="clientSecret"
                 name="clientSecret"
                 type="text"
@@ -78,6 +80,7 @@ export function CredsForm({ onSubmit, initialValues }) {
             <div>
               <Label htmlFor="refreshToken">Refresh Token</Label>
               <input
+                className="input"
                 id="refreshToken"
                 name="refreshToken"
                 type="text"
@@ -91,6 +94,7 @@ export function CredsForm({ onSubmit, initialValues }) {
             <div>
               <Label htmlFor="gatewayUrl">Gateway URL</Label>
               <input
+                className="input"
                 id="gatewayUrl"
                 name="gatewayUrl"
                 type="text"
@@ -101,7 +105,9 @@ export function CredsForm({ onSubmit, initialValues }) {
                 <Error>{formik.errors.gatewayUrl}</Error>
               ) : null}
             </div>
-            <button type="submit">Save</button>
+            <button className="submit-button" type="submit">
+              Save
+            </button>
           </form>
         </FormArea>
       )}

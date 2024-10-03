@@ -9,6 +9,7 @@ import DisplayResult from "@/utils/DisplayResult.jsx";
 import { FormArea, Error, ResultArea } from "@/App.styled.jsx";
 import * as Yup from "yup";
 import { HomeButton } from "@/components/HomeButton";
+import { Loading } from "@/components/Loading";
 
 const credentials = {
   clientId: import.meta.env.REACT_APP_CLIENT_ID || "",
@@ -240,13 +241,15 @@ export function CompanyCreationPage() {
         ) : (
           <>
             {isLoading ? (
-              <div>Loading...</div>
+              <Loading />
             ) : submissionStatus ? (
               <ResultArea>
                 {error && <Error>{error}</Error>}
                 <h2>{submissionStatus}</h2>
                 {responseData && <DisplayResult data={responseData} />}
-                <button onClick={handleStartOver}>Start Over</button>
+                <button className="submit-button" onClick={handleStartOver}>
+                  Start Over
+                </button>
               </ResultArea>
             ) : (
               <FormArea>

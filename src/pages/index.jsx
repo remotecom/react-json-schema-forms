@@ -3,10 +3,8 @@ import { StyledLinkButton, ResultArea } from "@/App.styled.jsx";
 export function HomePage() {
   return (
     <ResultArea>
-      <h1 className="text-3xl font-bold underline">
-        Experience Remote Embedded
-      </h1>
-      <div style={{ margin: "20px 0", display: "flex", gap: "10px" }}>
+      <h1 className="text-3xl text-blue">Experience Remote Embedded</h1>
+      <div className="flex gap-4">
         <StyledLinkButton to="/create-company">
           Create a Company
         </StyledLinkButton>

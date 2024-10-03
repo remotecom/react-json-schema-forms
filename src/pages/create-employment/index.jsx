@@ -7,6 +7,7 @@ import { CredsForm } from "@/components/CredentialsForm.jsx";
 import { FormArea, Error } from "@/App.styled.jsx";
 import * as Yup from "yup";
 import { HomeButton } from "../../components/HomeButton";
+import { Loading } from "@/components/Loading";
 
 export function EmploymentCreationPage() {
   const [jsonSchema, setJsonSchema] = useState(null);
@@ -244,13 +245,15 @@ export function EmploymentCreationPage() {
         ) : (
           <>
             {isLoading ? (
-              <div>Loading...</div>
+              <Loading />
             ) : submissionStatus ? (
               <FormArea>
                 {error && <Error>{error}</Error>}
                 <h2>{submissionStatus}</h2>
                 {error && <Error>{error}</Error>}
-                <button onClick={handleStartOver}>Start Over</button>
+                <button className="submit-button" onClick={handleStartOver}>
+                  Start Over
+                </button>
               </FormArea>
             ) : (
               <FormArea>
