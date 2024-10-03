@@ -21,6 +21,7 @@ export default {
     backgroundColor: {
       black: "#0061FF",
       blue: "#0061FF",
+      blank: "#ffffff",
     },
     extend: {
       spacing: {

@@ -3,6 +3,18 @@
 @tailwind utilities;
 
 @layer components {
+  .h1 {
+    @apply text-3xl my-6;
+  }
+
+  .h2 {
+    @apply text-2xl my-4;
+  }
+
+  .h3 {
+    @apply text-xl my-2;
+  }
+
   .form {
     @apply flex flex-col gap-y-4 w-full;
   }
@@ -21,6 +33,10 @@
 
   .submit-button {
     @apply bg-blue text-white rounded-lg p-2 hover:saturate-150;
+  }
+
+  .result-area {
+    @apply flex flex-col items-center p-8 m-6 rounded-lg overflow-x-auto bg-blank;
   }
 }
 

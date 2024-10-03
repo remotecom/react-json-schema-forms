@@ -1,13 +1,13 @@
-// src/Company_Creation/App.js
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
+import * as Yup from "yup";
+
 import { getClientCredentialsToken } from "@/utils/auth-utils.js";
 import Form from "@/components/form/Form.jsx";
 import DynamicForm from "@/components/form/DynamicForm.jsx";
 import { CredsForm } from "@/components/CredentialsForm.jsx";
 import DisplayResult from "@/utils/DisplayResult.jsx";
-import { FormArea, Error, ResultArea } from "@/App.styled.jsx";
-import * as Yup from "yup";
+import { FormArea, Error } from "@/App.styled.jsx";
 import { HomeButton } from "@/components/HomeButton";
 import { Loading } from "@/components/Loading";
 
@@ -243,14 +243,14 @@ export function CompanyCreationPage() {
             {isLoading ? (
               <Loading />
             ) : submissionStatus ? (
-              <ResultArea>
+              <div className="result-area">
                 {error && <Error>{error}</Error>}
-                <h2>{submissionStatus}</h2>
+                <h2 className="h2">{submissionStatus}</h2>
                 {responseData && <DisplayResult data={responseData} />}
                 <button className="submit-button" onClick={handleStartOver}>
                   Start Over
                 </button>
-              </ResultArea>
+              </div>
             ) : (
               <FormArea>
                 <h1>Company Information Form</h1>

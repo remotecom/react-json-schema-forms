@@ -4,7 +4,6 @@ import { getClientCredentialsToken } from "@/utils/auth-utils.js";
 import DynamicForm from "@/components/form/DynamicForm.jsx";
 import { CredsForm } from "@/components/CredentialsForm.jsx";
 import DisplayResult from "@/utils/DisplayResult.jsx";
-import { ResultArea, Error } from "@/App.styled.jsx";
 import { HomeButton } from "../../components/HomeButton";
 import { Loading } from "@/components/Loading";
 
@@ -253,13 +252,13 @@ export function CostCalculatorPage() {
         )}
         {error && <Error>{error}</Error>}
         {result && (
-          <ResultArea>
-            <h2>Calculation Result</h2>
+          <div className="result-area">
+            <h2 className="h2">Calculation Result</h2>
             <DisplayResult data={result.data} />
             <button className="submit-button" onClick={() => setResult(null)}>
               Start Over
             </button>
-          </ResultArea>
+          </div>
         )}
       </div>
     </>

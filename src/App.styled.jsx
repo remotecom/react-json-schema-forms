@@ -235,21 +235,3 @@ export const ArrayItem = styled.div`
   padding-bottom: 5px;
   border-bottom: 1px solid var(--colors-linkWater);
 `;
-
-export const ResultArea = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center the content horizontally */
-  max-width: 90%; /* Slightly wider than FormArea */
-  padding: 32px 16px;
-  margin: 24px auto;
-  background-color: var(--colors-blank);
-  border-radius: 10px;
-  overflow-x: auto;
-
-  h2 {
-    margin-bottom: 16px;
-    font-size: 1.4rem;
-    color: var(--colors-darkNavy);
-  }
-`;
