@@ -229,7 +229,7 @@ export function CostCalculatorPage() {
       : [];
 
   return (
-    <div className="App">
+    <>
       <div className="flex justify-between p-5">
         <HomeButton to="/" />
         <CredentialsForm initialValues={creds} onSubmit={handleCredsSubmit} />
@@ -261,6 +261,6 @@ export function CostCalculatorPage() {
           </button>
         </div>
       )}
-    </div>
+    </>
   );
 }

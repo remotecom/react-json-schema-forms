@@ -227,43 +227,41 @@ export function CompanyCreationPage() {
 
   return (
     <>
-      <div className="App">
-        <div className="flex justify-between p-5">
-          <HomeButton to="/" />
-          <CredentialsForm initialValues={creds} onSubmit={handleCredsSubmit} />
-        </div>
-        {!initialFormValues ? (
-          <DynamicForm
-            fields={initialFormFields}
-            validationSchema={validationSchema}
-            onSubmit={handleInitialFormSubmit}
-            disableSubmit={Object.values(creds).some((value) => !value)}
-          />
-        ) : (
-          <>
-            {isLoading ? (
-              <Loading />
-            ) : submissionStatus ? (
-              <div className="result-area">
-                {error && <p className="error">{error}</p>}
-                <h2 className="h2">{submissionStatus}</h2>
-                {responseData && <DisplayResult data={responseData} />}
-                <button className="submit-button" onClick={handleStartOver}>
-                  Start Over
-                </button>
-              </div>
-            ) : (
-              <div className="form-area">
-                <h1>Company Information Form</h1>
-                {jsonSchema && (
-                  <Form jsonSchema={jsonSchema} onSubmit={handleSubmit} />
-                )}
-                {error && <p className="error">{error}</p>}
-              </div>
-            )}
-          </>
-        )}
+      <div className="flex justify-between p-5">
+        <HomeButton to="/" />
+        <CredentialsForm initialValues={creds} onSubmit={handleCredsSubmit} />
       </div>
+      {!initialFormValues ? (
+        <DynamicForm
+          fields={initialFormFields}
+          validationSchema={validationSchema}
+          onSubmit={handleInitialFormSubmit}
+          disableSubmit={Object.values(creds).some((value) => !value)}
+        />
+      ) : (
+        <>
+          {isLoading ? (
+            <Loading />
+          ) : submissionStatus ? (
+            <div className="result-area">
+              {error && <p className="error">{error}</p>}
+              <h2 className="h2">{submissionStatus}</h2>
+              {responseData && <DisplayResult data={responseData} />}
+              <button className="submit-button" onClick={handleStartOver}>
+                Start Over
+              </button>
+            </div>
+          ) : (
+            <div className="form-area">
+              <h1>Company Information Form</h1>
+              {jsonSchema && (
+                <Form jsonSchema={jsonSchema} onSubmit={handleSubmit} />
+              )}
+              {error && <p className="error">{error}</p>}
+            </div>
+          )}
+        </>
+      )}
     </>
   );
 }

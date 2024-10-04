@@ -231,47 +231,45 @@ export function EmploymentCreationPage() {
 
   return (
     <>
-      <div className="App">
-        <div className="flex justify-between p-5">
-          <HomeButton to="/" />
-          <CredentialsForm initialValues={creds} onSubmit={handleCredsSubmit} />
-        </div>
-        {!initialFormValues ? (
-          <DynamicForm
-            fields={initialFormFields}
-            validationSchema={validationSchema}
-            onSubmit={handleInitialFormSubmit}
-            disableSubmit={Object.values(creds).some((value) => !value)}
-          />
-        ) : (
-          <>
-            {isLoading ? (
-              <Loading />
-            ) : submissionStatus ? (
-              <div className="form-area">
-                {error && <p className="error">{error}</p>}
-                <h2>{submissionStatus}</h2>
-                {error && <p className="error">{error}</p>}
-                <button className="submit-button" onClick={handleStartOver}>
-                  Start Over
-                </button>
-              </div>
-            ) : (
-              <div className="form-area">
-                <h1>Employment Information Form</h1>
-                {jsonSchema && (
-                  <Form
-                    jsonSchema={jsonSchema}
-                    onSubmit={handleSubmit}
-                    isContractDetails={isContractDetails}
-                  />
-                )}
-                {error && <p className="error">{error}</p>}
-              </div>
-            )}
-          </>
-        )}
+      <div className="flex justify-between p-5">
+        <HomeButton to="/" />
+        <CredentialsForm initialValues={creds} onSubmit={handleCredsSubmit} />
       </div>
+      {!initialFormValues ? (
+        <DynamicForm
+          fields={initialFormFields}
+          validationSchema={validationSchema}
+          onSubmit={handleInitialFormSubmit}
+          disableSubmit={Object.values(creds).some((value) => !value)}
+        />
+      ) : (
+        <>
+          {isLoading ? (
+            <Loading />
+          ) : submissionStatus ? (
+            <div className="form-area">
+              {error && <p className="error">{error}</p>}
+              <h2>{submissionStatus}</h2>
+              {error && <p className="error">{error}</p>}
+              <button className="submit-button" onClick={handleStartOver}>
+                Start Over
+              </button>
+            </div>
+          ) : (
+            <div className="form-area">
+              <h1>Employment Information Form</h1>
+              {jsonSchema && (
+                <Form
+                  jsonSchema={jsonSchema}
+                  onSubmit={handleSubmit}
+                  isContractDetails={isContractDetails}
+                />
+              )}
+              {error && <p className="error">{error}</p>}
+            </div>
+          )}
+        </>
+      )}
     </>
   );
 }
