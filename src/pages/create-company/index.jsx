@@ -6,9 +6,9 @@ import { getClientCredentialsToken } from "@/utils/auth-utils.js";
 import Form from "@/components/ui/form/Form.jsx";
 import DynamicForm from "@/components/ui/form/DynamicForm.jsx";
 import { CredentialsForm } from "@/components/CredentialsForm.jsx";
-import DisplayResult from "@/utils/DisplayResult.jsx";
-import { HomeButton } from "@/components/HomeButton";
-import { Loading } from "@/components/Loading";
+import DisplayResult from "@/components/DisplayResult.jsx";
+import { HomeButton } from "@/components/HomeButton.jsx";
+import { Loading } from "@/components/Loading.jsx";
 
 const credentials = {
   clientId: import.meta.env.REACT_APP_CLIENT_ID || "",

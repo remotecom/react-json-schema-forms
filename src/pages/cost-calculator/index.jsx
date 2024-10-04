@@ -3,8 +3,8 @@ import axios from "axios";
 import { getClientCredentialsToken } from "@/utils/auth-utils.js";
 import DynamicForm from "@/components/ui/form/DynamicForm.jsx";
 import { CredentialsForm } from "@/components/CredentialsForm.jsx";
-import DisplayResult from "@/utils/DisplayResult.jsx";
-import { HomeButton } from "../../components/HomeButton";
+import DisplayResult from "@/components/DisplayResult.jsx";
+import { HomeButton } from "@/components/HomeButton";
 import { Loading } from "@/components/Loading";
 
 const fields = [

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useFormik } from "formik";
 import PropTypes from "prop-types";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button.jsx";
 
 const DynamicForm = ({ fields, validationSchema, onSubmit }) => {
   const initialValues = useMemo(() => {
