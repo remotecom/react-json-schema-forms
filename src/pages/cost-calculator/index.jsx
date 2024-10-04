@@ -60,33 +60,17 @@ const fields = [
 export function CostCalculatorPage() {
   const [countries, setCountries] = useState([]);
   const [accessToken, setAccessToken] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
-
-  const [creds, setCreds] = useState({
-    clientId: import.meta.env.REACT_APP_CLIENT_ID || "",
-    clientSecret: import.meta.env.REACT_APP_CLIENT_SECRET || "",
-    gatewayUrl: import.meta.env.REACT_APP_GATEWAY_URL || "",
-    refreshToken: import.meta.env.REACT_APP_REFRESH_TOKEN || "",
-  });
+  const credentials = JSON.parse(localStorage.getItem("credsFormData"));
 
   // Fetch Access Token using the utility function
-  const fetchAccessToken = useCallback(async () => {
-    if (
-      !creds.clientId ||
-      !creds.clientSecret ||
-      !creds.gatewayUrl ||
-      !creds.refreshToken
-    ) {
-      setError("Please fill out and save the credentials form to proceed.");
-      setIsLoading(false);
-      return null;
-    }
-
+  async function fetchAccessToken() {
+    const credentials = JSON.parse(localStorage.getItem("credsFormData"));
     try {
       const token = await getClientCredentialsToken(
-        creds,
+        credentials,
         setError,
         setIsLoading
       );
@@ -101,10 +85,10 @@ export function CostCalculatorPage() {
       );
       return null;
     }
-  }, [creds]);
+  }
 
   // Fetch the list of countries
-  const fetchCountries = useCallback(async () => {
+  async function fetchCountries() {
     setIsLoading(true);
     setError(null);
     const token = await fetchAccessToken();
@@ -128,23 +112,16 @@ export function CostCalculatorPage() {
         setIsLoading(false);
       }
     }
-  }, [creds.gatewayUrl, fetchAccessToken]);
+  }
 
   useEffect(() => {
-    if (
-      creds.gatewayUrl &&
-      creds.clientId &&
-      creds.clientSecret &&
-      creds.refreshToken
-    ) {
+    if (credentials) {
       fetchCountries();
-    } else {
-      setIsLoading(false);
     }
-  }, [creds, fetchCountries]);
+  }, []);
 
   const handleCredsSubmit = (values) => {
-    setCreds(values);
+    fetchCountries();
   };
 
   const handleCountryChange = (event) => {
@@ -229,30 +206,32 @@ export function CostCalculatorPage() {
         ]
       : [];
 
+  if (!credentials) {
+    return (
+      <>
+        <div className="flex justify-between p-5">
+          <HomeButton to="/" />
+          <CredentialsForm initialValues={{}} onSubmit={handleCredsSubmit} />
+        </div>
+        <div className="text-center">
+          Please fill out the credentials form to proceed.
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <div className="flex justify-between p-5">
         <HomeButton to="/" />
-        <CredentialsForm initialValues={creds} onSubmit={handleCredsSubmit} />
+        <CredentialsForm initialValues={{}} onSubmit={handleCredsSubmit} />
       </div>
       {formFields.length > 0 && !result ? (
-        <DynamicForm
-          fields={formFields}
-          onSubmit={handleSubmit}
-          disableSubmit={Object.values(creds).some((value) => !value)}
-        />
+        <DynamicForm fields={formFields} onSubmit={handleSubmit} />
       ) : (
-        <>
-          {isLoading && !result ? (
-            <Loading />
-          ) : (
-            <div className="text-center">
-              Please fill out the credentials form to proceed.
-            </div>
-          )}
-        </>
+        <>{isLoading && <Loading />}</>
       )}
-      {error && <p className="error">{error}</p>}
+      {error && <p className="text-center error">{error}</p>}
       {result && (
         <div className="result-area">
           <h2 className="h2">Calculation Result</h2>
