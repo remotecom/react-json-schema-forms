@@ -4,7 +4,7 @@ const colors = {
   black: "#000000",
   blank: "#ffffff",
   primary: "#191c1f",
-  secondary: "#4f55f1",
+  secondary: "#8d969e",
   error: "#FF4A5A",
 };
 

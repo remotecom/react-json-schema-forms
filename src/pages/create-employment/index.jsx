@@ -255,8 +255,8 @@ export function EmploymentCreationPage() {
               <Button onClick={handleStartOver}>Start Over</Button>
             </div>
           ) : (
-            <div className="form-area">
-              <h1>Employment Information Form</h1>
+            <div className="flex flex-col items-center">
+              <h2 className="h2">Employment Information Form</h2>
               {jsonSchema && (
                 <Form
                   jsonSchema={jsonSchema}

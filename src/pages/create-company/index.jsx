@@ -251,8 +251,8 @@ export function CompanyCreationPage() {
               <Button onClick={handleStartOver}>Start Over</Button>
             </div>
           ) : (
-            <div className="form-area">
-              <h1>Company Information Form</h1>
+            <div className="flex flex-col items-center">
+              <h2 className="h2">Company Information Form</h2>
               {jsonSchema && (
                 <Form jsonSchema={jsonSchema} onSubmit={handleSubmit} />
               )}
