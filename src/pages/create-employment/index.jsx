@@ -3,7 +3,7 @@ import axios from "axios";
 import { getAccessToken } from "@/utils/auth-utils.js";
 import Form from "@/components/form/Form.jsx";
 import DynamicForm from "@/components/form/DynamicForm.jsx";
-import { CredsForm } from "@/components/CredentialsForm.jsx";
+import { CredentialsForm } from "@/components/CredentialsForm.jsx";
 import * as Yup from "yup";
 import { HomeButton } from "../../components/HomeButton";
 import { Loading } from "@/components/Loading";
@@ -234,7 +234,7 @@ export function EmploymentCreationPage() {
       <div className="App">
         <div className="flex justify-between p-5">
           <HomeButton to="/" />
-          <CredsForm initialValues={creds} onSubmit={handleCredsSubmit} />
+          <CredentialsForm initialValues={creds} onSubmit={handleCredsSubmit} />
         </div>
         {!initialFormValues ? (
           <DynamicForm

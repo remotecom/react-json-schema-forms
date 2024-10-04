@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { getClientCredentialsToken } from "@/utils/auth-utils.js";
 import DynamicForm from "@/components/form/DynamicForm.jsx";
-import { CredsForm } from "@/components/CredentialsForm.jsx";
+import { CredentialsForm } from "@/components/CredentialsForm.jsx";
 import DisplayResult from "@/utils/DisplayResult.jsx";
 import { HomeButton } from "../../components/HomeButton";
 import { Loading } from "@/components/Loading";
@@ -232,7 +232,7 @@ export function CostCalculatorPage() {
     <div className="App">
       <div className="flex justify-between p-5">
         <HomeButton to="/" />
-        <CredsForm initialValues={creds} onSubmit={handleCredsSubmit} />
+        <CredentialsForm initialValues={creds} onSubmit={handleCredsSubmit} />
       </div>
       {formFields.length > 0 && !result ? (
         <DynamicForm
