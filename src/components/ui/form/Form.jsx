@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { modify, createHeadlessForm } from "@remoteoss/json-schema-form";
 import { Formik, Form as FormikForm } from "formik";
-import { fieldsMapConfig } from "@/components/form/Fields.jsx";
+import { fieldsMapConfig } from "@/components/ui/form/Fields.jsx";
 
 const COMPONENT_KEY = "Component";
 

@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { getAccessToken } from "@/utils/auth-utils.js";
-import Form from "@/components/form/Form.jsx";
-import DynamicForm from "@/components/form/DynamicForm.jsx";
+import Form from "@/components/ui/form/Form.jsx";
+import DynamicForm from "@/components/ui/form/DynamicForm.jsx";
 import { CredentialsForm } from "@/components/CredentialsForm.jsx";
 import * as Yup from "yup";
 import { HomeButton } from "../../components/HomeButton";

@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { getClientCredentialsToken } from "@/utils/auth-utils.js";
-import DynamicForm from "@/components/form/DynamicForm.jsx";
+import DynamicForm from "@/components/ui/form/DynamicForm.jsx";
 import { CredentialsForm } from "@/components/CredentialsForm.jsx";
 import DisplayResult from "@/utils/DisplayResult.jsx";
 import { HomeButton } from "../../components/HomeButton";
@@ -242,7 +242,7 @@ export function CostCalculatorPage() {
         />
       ) : (
         <>
-          {isLoading ? (
+          {isLoading && !result ? (
             <Loading />
           ) : (
             <div className="text-center">

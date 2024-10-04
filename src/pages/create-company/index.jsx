@@ -3,8 +3,8 @@ import axios from "axios";
 import * as Yup from "yup";
 
 import { getClientCredentialsToken } from "@/utils/auth-utils.js";
-import Form from "@/components/form/Form.jsx";
-import DynamicForm from "@/components/form/DynamicForm.jsx";
+import Form from "@/components/ui/form/Form.jsx";
+import DynamicForm from "@/components/ui/form/DynamicForm.jsx";
 import { CredentialsForm } from "@/components/CredentialsForm.jsx";
 import DisplayResult from "@/utils/DisplayResult.jsx";
 import { HomeButton } from "@/components/HomeButton";
