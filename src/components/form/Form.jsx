@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { modify, createHeadlessForm } from "@remoteoss/json-schema-form";
 import { Formik, Form as FormikForm } from "formik";
-import { FormArea, Error } from "@/App.styled.jsx";
 import { fieldsMapConfig } from "@/components/form/Fields.jsx";
 
 const COMPONENT_KEY = "Component";
@@ -155,7 +154,7 @@ export default function Form({ jsonSchema, onSubmit }) {
       onSubmit={handleFormSubmit}
     >
       {({ isSubmitting, errors }) => (
-        <FormArea>
+        <div className="form-area">
           <FormikForm className="form">
             {fields.map((field) => {
               if (field.isVisible === false || field.deprecated) {
@@ -173,7 +172,9 @@ export default function Form({ jsonSchema, onSubmit }) {
               return FieldComponent ? (
                 <FieldComponent key={field.name} {...field} />
               ) : (
-                <Error>Field type {field.inputType} not supported</Error>
+                <p className="error">
+                  Field type {field.inputType} not supported
+                </p>
               );
             })}
 
@@ -185,7 +186,7 @@ export default function Form({ jsonSchema, onSubmit }) {
               Submit
             </button>
           </FormikForm>
-        </FormArea>
+        </div>
       )}
     </Formik>
   );

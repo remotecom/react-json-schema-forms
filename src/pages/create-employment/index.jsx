@@ -4,7 +4,6 @@ import { getAccessToken } from "@/utils/auth-utils.js";
 import Form from "@/components/form/Form.jsx";
 import DynamicForm from "@/components/form/DynamicForm.jsx";
 import { CredsForm } from "@/components/CredentialsForm.jsx";
-import { FormArea, Error } from "@/App.styled.jsx";
 import * as Yup from "yup";
 import { HomeButton } from "../../components/HomeButton";
 import { Loading } from "@/components/Loading";
@@ -233,8 +232,10 @@ export function EmploymentCreationPage() {
   return (
     <>
       <div className="App">
-        <HomeButton to="/" />
-        <CredsForm initialValues={creds} onSubmit={handleCredsSubmit} />
+        <div className="flex justify-between p-5">
+          <HomeButton to="/" />
+          <CredsForm initialValues={creds} onSubmit={handleCredsSubmit} />
+        </div>
         {!initialFormValues ? (
           <DynamicForm
             fields={initialFormFields}
@@ -247,16 +248,16 @@ export function EmploymentCreationPage() {
             {isLoading ? (
               <Loading />
             ) : submissionStatus ? (
-              <FormArea>
-                {error && <Error>{error}</Error>}
+              <div className="form-area">
+                {error && <p className="error">{error}</p>}
                 <h2>{submissionStatus}</h2>
-                {error && <Error>{error}</Error>}
+                {error && <p className="error">{error}</p>}
                 <button className="submit-button" onClick={handleStartOver}>
                   Start Over
                 </button>
-              </FormArea>
+              </div>
             ) : (
-              <FormArea>
+              <div className="form-area">
                 <h1>Employment Information Form</h1>
                 {jsonSchema && (
                   <Form
@@ -265,8 +266,8 @@ export function EmploymentCreationPage() {
                     isContractDetails={isContractDetails}
                   />
                 )}
-                {error && <Error>{error}</Error>}
-              </FormArea>
+                {error && <p className="error">{error}</p>}
+              </div>
             )}
           </>
         )}

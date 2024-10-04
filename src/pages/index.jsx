@@ -1,19 +1,20 @@
-import { StyledLinkButton } from "@/App.styled.jsx";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export function HomePage() {
   return (
     <div className="result-area">
       <h1 className="h1 text-blue">Experience Remote Embedded</h1>
       <div className="flex gap-4">
-        <StyledLinkButton to="/create-company">
-          Create a Company
-        </StyledLinkButton>
-        <StyledLinkButton to="/create-employment">
-          Create Employment
-        </StyledLinkButton>
-        <StyledLinkButton to="/cost-calculator">
-          Cost Calculator
-        </StyledLinkButton>
+        <Button asChild>
+          <Link to="/create-company">Create a Company</Link>
+        </Button>
+        <Button asChild>
+          <Link to="/create-employment">Create Employment</Link>
+        </Button>
+        <Button asChild>
+          <Link to="/cost-calculator">Cost Calculator</Link>
+        </Button>
       </div>
       {/* Static Section for Overview */}
       <section style={{ marginTop: "40px" }}>

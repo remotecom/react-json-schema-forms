@@ -7,7 +7,6 @@ import Form from "@/components/form/Form.jsx";
 import DynamicForm from "@/components/form/DynamicForm.jsx";
 import { CredsForm } from "@/components/CredentialsForm.jsx";
 import DisplayResult from "@/utils/DisplayResult.jsx";
-import { FormArea, Error } from "@/App.styled.jsx";
 import { HomeButton } from "@/components/HomeButton";
 import { Loading } from "@/components/Loading";
 
@@ -229,8 +228,10 @@ export function CompanyCreationPage() {
   return (
     <>
       <div className="App">
-        <HomeButton to="/" />
-        <CredsForm initialValues={creds} onSubmit={handleCredsSubmit} />
+        <div className="flex justify-between p-5">
+          <HomeButton to="/" />
+          <CredsForm initialValues={creds} onSubmit={handleCredsSubmit} />
+        </div>
         {!initialFormValues ? (
           <DynamicForm
             fields={initialFormFields}
@@ -244,7 +245,7 @@ export function CompanyCreationPage() {
               <Loading />
             ) : submissionStatus ? (
               <div className="result-area">
-                {error && <Error>{error}</Error>}
+                {error && <p className="error">{error}</p>}
                 <h2 className="h2">{submissionStatus}</h2>
                 {responseData && <DisplayResult data={responseData} />}
                 <button className="submit-button" onClick={handleStartOver}>
@@ -252,13 +253,13 @@ export function CompanyCreationPage() {
                 </button>
               </div>
             ) : (
-              <FormArea>
+              <div className="form-area">
                 <h1>Company Information Form</h1>
                 {jsonSchema && (
                   <Form jsonSchema={jsonSchema} onSubmit={handleSubmit} />
                 )}
-                {error && <Error>{error}</Error>}
-              </FormArea>
+                {error && <p className="error">{error}</p>}
+              </div>
             )}
           </>
         )}

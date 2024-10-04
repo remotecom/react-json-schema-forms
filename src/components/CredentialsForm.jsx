@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+
+import { Button } from "@/components/ui/button";
 import {
-  CredsFormWrapper,
-  FormArea,
-  Label,
-  Error,
-  ToggleButton,
-} from "@/App.styled.jsx";
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerFooter,
+  DrawerClose,
+  DrawerTitle,
+  DrawerDescription,
+} from "@/components/ui/drawer";
 
 export function CredsForm({ onSubmit, initialValues }) {
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
     // Retrieve form data from localStorage if available
@@ -19,10 +24,6 @@ export function CredsForm({ onSubmit, initialValues }) {
       formik.setValues(savedValues);
     }
   }, []);
-
-  const toggleForm = () => {
-    setIsCollapsed(!isCollapsed);
-  };
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -37,80 +38,104 @@ export function CredsForm({ onSubmit, initialValues }) {
     onSubmit: (values) => {
       // Save form data to localStorage
       localStorage.setItem("credsFormData", JSON.stringify(values));
+      setIsCollapsed(false);
       onSubmit(values);
     },
   });
 
   return (
-    <CredsFormWrapper className={isCollapsed ? "collapsed" : ""}>
-      <ToggleButton className="toggle" onClick={toggleForm}>
-        {isCollapsed ? "Show Credentials" : "Hide Credentials"}
-      </ToggleButton>
-      {!isCollapsed && (
-        <FormArea>
-          <form onSubmit={formik.handleSubmit} className="form">
-            <div>
-              <Label htmlFor="clientId">Client ID</Label>
-              <input
-                className="input"
-                id="clientId"
-                name="clientId"
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.clientId}
-              />
-              {formik.touched.clientId && formik.errors.clientId ? (
-                <Error>{formik.errors.clientId}</Error>
-              ) : null}
+    <Drawer>
+      <DrawerTrigger asChild>
+        <Button variant="outline">Show Credentials</Button>
+      </DrawerTrigger>
+
+      <DrawerContent>
+        <div className="mx-auto w-full max-w-sm">
+          <DrawerHeader>
+            <DrawerTitle>Remote API credentials</DrawerTitle>
+          </DrawerHeader>
+          <div className="p-4 pb-0">
+            <div className="form-area" style={{ margin: 0, padding: 0 }}>
+              <form onSubmit={formik.handleSubmit} className="form">
+                <div>
+                  <label className="block mb-1" htmlFor="clientId">
+                    Client ID
+                  </label>
+                  <input
+                    className="input"
+                    id="clientId"
+                    name="clientId"
+                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values.clientId}
+                  />
+                  {formik.touched.clientId && formik.errors.clientId ? (
+                    <p className="error">{formik.errors.clientId}</p>
+                  ) : null}
+                </div>
+                <div>
+                  <label className="block mb-1" htmlFor="clientSecret">
+                    Client Secret
+                  </label>
+                  <input
+                    className="input"
+                    id="clientSecret"
+                    name="clientSecret"
+                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values.clientSecret}
+                  />
+                  {formik.touched.clientSecret && formik.errors.clientSecret ? (
+                    <p className="error">{formik.errors.clientSecret}</p>
+                  ) : null}
+                </div>
+                <div>
+                  <label className="block mb-1" htmlFor="refreshToken">
+                    Refresh Token
+                  </label>
+                  <input
+                    className="input"
+                    id="refreshToken"
+                    name="refreshToken"
+                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values.refreshToken}
+                  />
+                  {formik.touched.refreshToken && formik.errors.refreshToken ? (
+                    <p className="error">{formik.errors.refreshToken}</p>
+                  ) : null}
+                </div>
+                <div>
+                  <label className="block mb-1" htmlFor="gatewayUrl">
+                    Gateway URL
+                  </label>
+                  <input
+                    className="input"
+                    id="gatewayUrl"
+                    name="gatewayUrl"
+                    type="text"
+                    onChange={formik.handleChange}
+                    value={formik.values.gatewayUrl}
+                  />
+                  {formik.touched.gatewayUrl && formik.errors.gatewayUrl ? (
+                    <p className="error">{formik.errors.gatewayUrl}</p>
+                  ) : null}
+                </div>
+                <DrawerClose asChild>
+                  <button className="submit-button" type="submit">
+                    Save
+                  </button>
+                </DrawerClose>
+              </form>
             </div>
-            <div>
-              <Label htmlFor="clientSecret">Client Secret</Label>
-              <input
-                className="input"
-                id="clientSecret"
-                name="clientSecret"
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.clientSecret}
-              />
-              {formik.touched.clientSecret && formik.errors.clientSecret ? (
-                <Error>{formik.errors.clientSecret}</Error>
-              ) : null}
-            </div>
-            <div>
-              <Label htmlFor="refreshToken">Refresh Token</Label>
-              <input
-                className="input"
-                id="refreshToken"
-                name="refreshToken"
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.refreshToken}
-              />
-              {formik.touched.refreshToken && formik.errors.refreshToken ? (
-                <Error>{formik.errors.refreshToken}</Error>
-              ) : null}
-            </div>
-            <div>
-              <Label htmlFor="gatewayUrl">Gateway URL</Label>
-              <input
-                className="input"
-                id="gatewayUrl"
-                name="gatewayUrl"
-                type="text"
-                onChange={formik.handleChange}
-                value={formik.values.gatewayUrl}
-              />
-              {formik.touched.gatewayUrl && formik.errors.gatewayUrl ? (
-                <Error>{formik.errors.gatewayUrl}</Error>
-              ) : null}
-            </div>
-            <button className="submit-button" type="submit">
-              Save
-            </button>
-          </form>
-        </FormArea>
-      )}
-    </CredsFormWrapper>
+          </div>
+          <DrawerFooter>
+            <DrawerClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </div>
+      </DrawerContent>
+    </Drawer>
   );
 }

@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     screens: {
@@ -19,9 +20,10 @@ export default {
       redPink: "#FF4A5A",
     },
     backgroundColor: {
-      black: "#0061FF",
+      black: "#000000",
       blue: "#0061FF",
       blank: "#ffffff",
+      darkBlue: "#00234B",
     },
     extend: {
       spacing: {
@@ -30,8 +32,12 @@ export default {
       },
       borderRadius: {
         "4xl": "2rem",
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
       },
+      colors: {},
     },
   },
-  plugins: [],
+  plugins: [require("tailwindcss-animate")],
 };

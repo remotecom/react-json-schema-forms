@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useFormik } from "formik";
 import PropTypes from "prop-types";
-import { FormArea, Label, Error } from "@/App.styled.jsx";
+import { Button } from "@/components/ui/button";
 
 const DynamicForm = ({ fields, validationSchema, onSubmit }) => {
   const initialValues = useMemo(() => {
@@ -40,11 +40,11 @@ const DynamicForm = ({ fields, validationSchema, onSubmit }) => {
   });
 
   return (
-    <FormArea>
+    <div className="form-area">
       <form className="form" onSubmit={formik.handleSubmit}>
         {fields.map((field) => (
           <div key={field.name}>
-            <Label>
+            <label className="block mb-1">
               {field.label}
               {field.type === "checkbox" && (
                 <input
@@ -55,7 +55,7 @@ const DynamicForm = ({ fields, validationSchema, onSubmit }) => {
                   value={formik.values[field.name]}
                 />
               )}
-            </Label>
+            </label>
 
             {field.type !== "checkbox" && (
               <>
@@ -91,15 +91,15 @@ const DynamicForm = ({ fields, validationSchema, onSubmit }) => {
               </>
             )}
             {formik.errors[field.name] && formik.touched[field.name] ? (
-              <Error>{formik.errors[field.name]}</Error>
+              <p className="error">{formik.errors[field.name]}</p>
             ) : null}
           </div>
         ))}
-        <button className="submit-button" type="submit">
+        <Button type="submit" variant="default">
           Submit
-        </button>
+        </Button>
       </form>
-    </FormArea>
+    </div>
   );
 };
 

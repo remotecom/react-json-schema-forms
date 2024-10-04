@@ -229,38 +229,38 @@ export function CostCalculatorPage() {
       : [];
 
   return (
-    <>
-      <div className="App">
+    <div className="App">
+      <div className="flex justify-between p-5">
         <HomeButton to="/" />
         <CredsForm initialValues={creds} onSubmit={handleCredsSubmit} />
-        {formFields.length > 0 && !result ? (
-          <DynamicForm
-            fields={formFields}
-            onSubmit={handleSubmit}
-            disableSubmit={Object.values(creds).some((value) => !value)}
-          />
-        ) : (
-          <>
-            {isLoading ? (
-              <Loading />
-            ) : (
-              <div className="text-center">
-                Please fill out the credentials form to proceed.
-              </div>
-            )}
-          </>
-        )}
-        {error && <Error>{error}</Error>}
-        {result && (
-          <div className="result-area">
-            <h2 className="h2">Calculation Result</h2>
-            <DisplayResult data={result.data} />
-            <button className="submit-button" onClick={() => setResult(null)}>
-              Start Over
-            </button>
-          </div>
-        )}
       </div>
-    </>
+      {formFields.length > 0 && !result ? (
+        <DynamicForm
+          fields={formFields}
+          onSubmit={handleSubmit}
+          disableSubmit={Object.values(creds).some((value) => !value)}
+        />
+      ) : (
+        <>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <div className="text-center">
+              Please fill out the credentials form to proceed.
+            </div>
+          )}
+        </>
+      )}
+      {error && <p className="error">{error}</p>}
+      {result && (
+        <div className="result-area">
+          <h2 className="h2">Calculation Result</h2>
+          <DisplayResult data={result.data} />
+          <button className="submit-button" onClick={() => setResult(null)}>
+            Start Over
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
