@@ -9,6 +9,7 @@ import { CredentialsForm } from "@/components/CredentialsForm.jsx";
 import DisplayResult from "@/components/DisplayResult.jsx";
 import { HomeButton } from "@/components/HomeButton.jsx";
 import { Loading } from "@/components/Loading.jsx";
+import { Button } from "@/components/ui/Button.jsx";
 
 const credentials = {
   clientId: import.meta.env.REACT_APP_CLIENT_ID || "",
@@ -247,9 +248,7 @@ export function CompanyCreationPage() {
               {error && <p className="error">{error}</p>}
               <h2 className="h2">{submissionStatus}</h2>
               {responseData && <DisplayResult data={responseData} />}
-              <button className="submit-button" onClick={handleStartOver}>
-                Start Over
-              </button>
+              <Button onClick={handleStartOver}>Start Over</Button>
             </div>
           ) : (
             <div className="form-area">

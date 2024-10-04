@@ -46,9 +46,9 @@ export function CredentialsForm({ onSubmit, initialValues }) {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Edit profile</SheetTitle>
+          <SheetTitle>Insert credentials</SheetTitle>
           <SheetDescription>
-            Make changes to your profile here. Click save when you're done.
+            If you don't know where to find these credentials, please refer to
           </SheetDescription>
         </SheetHeader>
         <div className="p-4 pb-0">
@@ -119,9 +119,7 @@ export function CredentialsForm({ onSubmit, initialValues }) {
                 ) : null}
               </div>
               <SheetClose asChild>
-                <button className="submit-button" type="submit">
-                  Save
-                </button>
+                <Button type="submit">Save</Button>
               </SheetClose>
             </form>
           </div>

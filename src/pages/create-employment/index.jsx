@@ -5,8 +5,9 @@ import Form from "@/components/ui/form/Form.jsx";
 import DynamicForm from "@/components/ui/form/DynamicForm.jsx";
 import { CredentialsForm } from "@/components/CredentialsForm.jsx";
 import * as Yup from "yup";
-import { HomeButton } from "../../components/HomeButton";
-import { Loading } from "@/components/Loading";
+import { HomeButton } from "@/components/HomeButton.jsx";
+import { Loading } from "@/components/Loading.jsx";
+import { Button } from "@/components/ui/Button.jsx";
 
 export function EmploymentCreationPage() {
   const [jsonSchema, setJsonSchema] = useState(null);
@@ -251,9 +252,7 @@ export function EmploymentCreationPage() {
               {error && <p className="error">{error}</p>}
               <h2>{submissionStatus}</h2>
               {error && <p className="error">{error}</p>}
-              <button className="submit-button" onClick={handleStartOver}>
-                Start Over
-              </button>
+              <Button onClick={handleStartOver}>Start Over</Button>
             </div>
           ) : (
             <div className="form-area">

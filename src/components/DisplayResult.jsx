@@ -37,7 +37,7 @@ const DisplayResult = ({ data, level = 0 }) => {
                   </div>
                 ))
               ) : (
-                <div className="text-bayoux break-words text-xs text-left ml-2.5">
+                <div className="text-primary break-words text-xs text-left ml-2.5">
                   Empty
                 </div>
               )}
@@ -62,7 +62,7 @@ const DisplayResult = ({ data, level = 0 }) => {
       return (
         <Section key={key} level={currentLevel}>
           <div className="font-bold break-words text-xs">{key}:</div>
-          <div className="text-bayoux break-words text-xs text-left ml-2.5">
+          <div className="text-primary break-words text-xs text-left ml-2.5">
             {value !== null && value !== undefined ? value.toString() : "Empty"}
           </div>
         </Section>

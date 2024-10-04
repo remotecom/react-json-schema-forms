@@ -4,8 +4,9 @@ import { getClientCredentialsToken } from "@/utils/auth-utils.js";
 import DynamicForm from "@/components/ui/form/DynamicForm.jsx";
 import { CredentialsForm } from "@/components/CredentialsForm.jsx";
 import DisplayResult from "@/components/DisplayResult.jsx";
-import { HomeButton } from "@/components/HomeButton";
-import { Loading } from "@/components/Loading";
+import { HomeButton } from "@/components/HomeButton.jsx";
+import { Loading } from "@/components/Loading.jsx";
+import { Button } from "@/components/ui/Button.jsx";
 
 const fields = [
   {
@@ -256,9 +257,7 @@ export function CostCalculatorPage() {
         <div className="result-area">
           <h2 className="h2">Calculation Result</h2>
           <DisplayResult data={result.data} />
-          <button className="submit-button" onClick={() => setResult(null)}>
-            Start Over
-          </button>
+          <Button onClick={() => setResult(null)}>Start Over</Button>
         </div>
       )}
     </>

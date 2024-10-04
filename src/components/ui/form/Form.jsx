@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { modify, createHeadlessForm } from "@remoteoss/json-schema-form";
 import { Formik, Form as FormikForm } from "formik";
 import { fieldsMapConfig } from "@/components/ui/form/Fields.jsx";
+import { Button } from "@/components/ui/Button.jsx";
 
 const COMPONENT_KEY = "Component";
 
@@ -178,13 +179,7 @@ export default function Form({ jsonSchema, onSubmit }) {
               );
             })}
 
-            <button
-              type="submit"
-              className="submit-button"
-              aria-disabled={isSubmitting}
-            >
-              Submit
-            </button>
+            <Button type="submit">Submit</Button>
           </FormikForm>
         </div>
       )}

@@ -20,27 +20,23 @@
   }
 
   .input {
-    @apply border border-bayoux rounded-lg p-1 w-full;
+    @apply border border-primary rounded-lg p-1 w-full;
   }
 
   .textarea {
-    @apply border border-bayoux rounded-lg p-1 w-full;
+    @apply border border-primary rounded-lg p-1 w-full;
   }
 
   .select {
-    @apply border border-bayoux rounded-lg p-1 w-full;
+    @apply border border-primary rounded-lg p-1 w-full;
   }
 
   .fieldset {
-    @apply border border-solid border-bayoux rounded-lg p-4;
-  }
-
-  .submit-button {
-    @apply bg-blue text-white rounded-lg p-2 hover:saturate-150;
+    @apply border border-solid border-primary rounded-lg p-4;
   }
 
   .error {
-    @apply text-redPink text-sm;
+    @apply text-error text-sm;
   }
 
   .result-area {
@@ -48,7 +44,7 @@
   }
 
   .form-area {
-    @apply flex flex-col items-center max-w-sm p-8 my-0 mx-auto rounded-lg bg-blank;
+    @apply flex flex-col items-center max-w-sm p-4 my-0 mb-2 mx-auto rounded-lg bg-blank;
   }
 }
 
@@ -59,6 +55,7 @@ body {
   padding: 0;
   font-family: Sans-Serif;
   box-sizing: border-box;
+  background-color: #f7f7f7;
 
   * {
     box-sizing: inherit;

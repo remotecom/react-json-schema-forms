@@ -9,7 +9,7 @@ export const Description = ({ description, helpCenter }) => {
   const { callToAction, title, content, error } = helpCenter || {};
 
   return (
-    <p className="text-sm text-bayoux my-1">
+    <p className="text-sm text-primary my-1">
       {description && typeof description === "string" ? (
         <span dangerouslySetInnerHTML={{ __html: description }} />
       ) : (
