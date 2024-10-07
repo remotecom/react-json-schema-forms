@@ -244,4 +244,5 @@ export const fieldsMapConfig = {
   number: (props) => <FieldText {...props} type="text" />,
   money: (props) => <FieldText {...props} type="text" />,
   fieldset: Fieldset,
+  countries: FieldSelect,
 };

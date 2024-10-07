@@ -1,7 +1,7 @@
-import { useEffect } from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
+import { object, string } from "yup";
 
+import lock from "@/assets/lock.svg";
 import { Button } from "@/components/ui/Button.jsx";
 import {
   Sheet,
@@ -12,37 +12,39 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/Sheet.jsx";
+import { useCredentials } from "@/domains/shared/credentials/useCredentials.js";
 
-export function CredentialsForm({ onSubmit, initialValues }) {
-  useEffect(() => {
-    // Retrieve form data from localStorage if available
-    const savedValues = JSON.parse(localStorage.getItem("credsFormData"));
-    if (savedValues) {
-      formik.setValues(savedValues);
-    }
-  }, []);
+const validationSchema = object({
+  clientId: string().required("Client ID is required"),
+  clientSecret: string().required("Client Secret is required"),
+  refreshToken: string().required("Refresh Token is required"),
+  gatewayUrl: string().url("Invalid URL").required("Gateway URL is required"),
+});
+
+export function CredentialsForm() {
+  const { credentials, setCredentials } = useCredentials();
 
   const formik = useFormik({
-    initialValues: initialValues,
-    validationSchema: Yup.object({
-      clientId: Yup.string().required("Client ID is required"),
-      clientSecret: Yup.string().required("Client Secret is required"),
-      refreshToken: Yup.string().required("Refresh Token is required"),
-      gatewayUrl: Yup.string()
-        .url("Invalid URL")
-        .required("Gateway URL is required"),
-    }),
+    initialValues: {
+      clientId: credentials.clientId,
+      clientSecret: credentials.clientSecret,
+      refreshToken: credentials.refreshToken,
+      gatewayUrl: credentials.gatewayUrl,
+    },
+    validationSchema,
     onSubmit: (values) => {
       // Save form data to localStorage
       localStorage.setItem("credsFormData", JSON.stringify(values));
-      onSubmit(values);
+      setCredentials(values);
     },
   });
 
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="outline">Show Credentials</Button>
+        <Button variant="ghost" size="icon">
+          <img src={lock} alt="home" />
+        </Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>

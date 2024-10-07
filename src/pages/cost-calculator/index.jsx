@@ -1,12 +1,12 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { string, number, boolean, object } from "yup";
 import { getClientCredentialsToken } from "@/utils/auth-utils.js";
 import DynamicForm from "@/components/ui/form/DynamicForm.jsx";
-import { CredentialsForm } from "@/components/CredentialsForm.jsx";
 import DisplayResult from "@/components/DisplayResult.jsx";
-import { HomeButton } from "@/components/HomeButton.jsx";
 import { Button } from "@/components/ui/Button.jsx";
 import { Loading } from "@/components/Loading.jsx";
+import { useCredentials } from "@/domains/shared/credentials/useCredentials.js";
 
 const fields = [
   {
@@ -57,23 +57,30 @@ const fields = [
   },
 ];
 
+const validationSchema = object({
+  age: number().required("Age is required"),
+  annual_gross_salary: number().required("Salary is required"),
+  employment_term: string().required("Employment term is required"),
+  title: string().required("Title is required"),
+  regional_to_employer_exchange_rate: string().required(
+    "Exchange rate is required"
+  ),
+  include_benefits: boolean(),
+  include_cost_breakdowns: boolean(),
+});
+
 export function CostCalculatorPage() {
   const [countries, setCountries] = useState([]);
   const [accessToken, setAccessToken] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [result, setResult] = useState(null);
-  const credentials = JSON.parse(localStorage.getItem("credsFormData"));
+  const { credentials } = useCredentials();
 
   // Fetch Access Token using the utility function
   async function fetchAccessToken() {
-    const credentials = JSON.parse(localStorage.getItem("credsFormData"));
     try {
-      const token = await getClientCredentialsToken(
-        credentials,
-        setError,
-        setIsLoading
-      );
+      const token = await getClientCredentialsToken(setError, setIsLoading);
       setAccessToken(token);
       return token;
     } catch (err) {
@@ -115,14 +122,8 @@ export function CostCalculatorPage() {
   }
 
   useEffect(() => {
-    if (credentials) {
-      fetchCountries();
-    }
-  }, []);
-
-  const handleCredsSubmit = (values) => {
     fetchCountries();
-  };
+  }, []);
 
   const handleCountryChange = (event) => {
     // Clear the error message when the user selects a country
@@ -208,30 +209,30 @@ export function CostCalculatorPage() {
 
   if (!credentials) {
     return (
-      <>
-        <div className="flex justify-between p-5">
-          <HomeButton to="/" />
-          <CredentialsForm initialValues={{}} onSubmit={handleCredsSubmit} />
-        </div>
-        <div className="text-center">
-          Please fill out the credentials form to proceed.
-        </div>
-      </>
+      <div className="text-center">
+        Please fill out the credentials form to proceed.
+      </div>
     );
+  }
+
+  if (error) {
+    return <p className="text-center error">{error}</p>;
+  }
+
+  if (isLoading) {
+    return <Loading />;
   }
 
   return (
     <>
-      <div className="flex justify-between p-5">
-        <HomeButton to="/" />
-        <CredentialsForm initialValues={{}} onSubmit={handleCredsSubmit} />
-      </div>
-      {formFields.length > 0 && !result ? (
-        <DynamicForm fields={formFields} onSubmit={handleSubmit} />
-      ) : (
-        <>{isLoading && <Loading />}</>
+      {formFields.length > 0 && !result && (
+        <DynamicForm
+          fields={formFields}
+          onSubmit={handleSubmit}
+          validationSchema={validationSchema}
+        />
       )}
-      {error && <p className="text-center error">{error}</p>}
+
       {result && (
         <div className="result-area">
           <h2 className="h2">Calculation Result</h2>

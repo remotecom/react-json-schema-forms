@@ -40,7 +40,7 @@
   }
 
   .result-area {
-    @apply flex flex-col items-center p-8 m-6 rounded-lg overflow-x-auto bg-blank;
+    @apply flex flex-col items-center p-5 m-5 rounded-lg overflow-x-auto bg-blank;
   }
 
   .form-area {

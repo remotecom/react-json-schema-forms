@@ -1,97 +1,114 @@
-import { useEffect, useState, useCallback } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
+import { object, string, boolean } from "yup";
 import { getAccessToken } from "@/utils/auth-utils.js";
 import Form from "@/components/ui/form/Form.jsx";
 import DynamicForm from "@/components/ui/form/DynamicForm.jsx";
-import { CredentialsForm } from "@/components/CredentialsForm.jsx";
-import * as Yup from "yup";
-import { HomeButton } from "@/components/HomeButton.jsx";
 import { Loading } from "@/components/Loading.jsx";
 import { Button } from "@/components/ui/Button.jsx";
+
+const initialFormFields = [
+  {
+    name: "country_code",
+    label: "Country Code",
+    type: "text",
+    defaultValue: "",
+  },
+  {
+    name: "type",
+    label: "Type of Employee",
+    type: "select",
+    options: [
+      { value: "employee", label: "Employee" },
+      { value: "contractor", label: "Contractor" },
+    ],
+    defaultValue: "",
+  },
+  {
+    name: "pricing_plan",
+    label: "Pricing Plan",
+    type: "select",
+    options: [
+      { value: "monthly", label: "Monthly" },
+      { value: "annually", label: "Annually" },
+    ],
+    defaultValue: "",
+  },
+  {
+    name: "send_self_enrollment_invitation",
+    label: "Send Self-Enrollment Invitation",
+    type: "checkbox",
+    defaultValue: false,
+  },
+];
+
+const validationSchema = object({
+  country_code: string().required("Country code is required"),
+  type: string().required("Type of employee is required"),
+  pricing_plan: string().required("Pricing plan is required"),
+  send_self_enrollment_invitation: boolean(),
+});
 
 export function EmploymentCreationPage() {
   const [jsonSchema, setJsonSchema] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
-  const [employmentId, setEmploymentId] = useState(null);
-  const [isContractDetails, setIsContractDetails] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [initialFormValues, setInitialFormValues] = useState(null);
   const [submissionStatus, setSubmissionStatus] = useState(null);
   const [error, setError] = useState(null);
 
-  const [creds, setCreds] = useState({
-    clientId: import.meta.env.REACT_APP_CLIENT_ID || "",
-    clientSecret: import.meta.env.REACT_APP_CLIENT_SECRET || "",
-    refreshToken: import.meta.env.REACT_APP_REFRESH_TOKEN || "",
-    gatewayUrl: import.meta.env.REACT_APP_GATEWAY_URL || "",
-  });
+  const employmentId = useRef();
 
   // Fetch Access Token using the utility function
-  const fetchAccessToken = useCallback(async () => {
+  async function fetchAccessToken() {
     try {
-      const token = await getAccessToken(creds, setError, setIsLoading);
+      const token = await getAccessToken(setError, setIsLoading);
       setAccessToken(token);
       return token;
     } catch (err) {
       // Error is already handled within getAccessToken
       return null;
     }
-  }, [creds]);
+  }
 
-  const fetchSchema = useCallback(
-    async (endpoint) => {
-      setIsLoading(true);
-      setError(null);
-      const token = await fetchAccessToken();
+  async function fetchSchema(endpoint) {
+    setIsLoading(true);
+    setError(null);
+    const token = await fetchAccessToken();
 
-      if (token) {
-        try {
-          const response = await axios.get(endpoint, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-          setJsonSchema(response.data.data);
-        } catch (error) {
-          console.error("Error fetching JSON schema:", error);
-          setError(
-            `Error fetching form data: ${
-              error.response?.data?.message || error.message
-            }`
-          );
-        } finally {
-          setIsLoading(false);
-        }
+    if (token) {
+      try {
+        const response = await axios.get(endpoint, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setJsonSchema(response.data.data);
+      } catch (error) {
+        console.error("Error fetching JSON schema:", error);
+        setError(
+          `Error fetching form data: ${
+            error.response?.data?.message || error.message
+          }`
+        );
+      } finally {
+        setIsLoading(false);
       }
-    },
-    [fetchAccessToken]
-  );
-
-  useEffect(() => {
-    if (initialFormValues && !isContractDetails) {
-      fetchSchema(
-        `/api/v1/countries/${initialFormValues.country_code}/employment_basic_information`
-      );
     }
-  }, [fetchSchema, isContractDetails, initialFormValues]);
+  }
 
-  useEffect(() => {
-    if (employmentId && isContractDetails) {
-      fetchSchema(
-        `/api/v1/countries/${initialFormValues.country_code}/contract_details`
-      );
-    }
-  }, [employmentId, isContractDetails, fetchSchema, initialFormValues]);
-
-  const handleInitialFormSubmit = (values) => {
+  async function handleInitialFormSubmit(values) {
     setInitialFormValues(values);
-  };
+    await fetchSchema(
+      `/api/v1/countries/${values.country_code}/employment_basic_information`
+    );
+  }
 
-  const handleSubmit = async (jsonValues) => {
+  async function handleSubmit(jsonValues) {
     try {
       setError(null);
 
-      if (!isContractDetails) {
+      if (!employmentId.current) {
         const basicInformation = {
           ...jsonValues, // Spread all values from jsonValues
         };
@@ -112,13 +129,14 @@ export function EmploymentCreationPage() {
         );
 
         if (postResponse.status === 201) {
-          const newEmploymentId = postResponse.data.data.employment.id;
-          setEmploymentId(newEmploymentId);
-          setIsContractDetails(true);
+          employmentId.current = postResponse.data.data.employment.id;
+          await fetchSchema(
+            `/api/v1/countries/${initialFormValues.country_code}/contract_details`
+          );
         }
       } else {
         const patchResponse = await axios.patch(
-          `/api/v1/employments/${employmentId}`,
+          `/api/v1/employments/${employmentId.current}`,
           {
             contract_details: {
               ...jsonValues,
@@ -138,8 +156,8 @@ export function EmploymentCreationPage() {
         if (patchResponse.status === 200) {
           if (initialFormValues.send_self_enrollment_invitation) {
             try {
-              const inviteResponse = await axios.post(
-                `/api/v1/employments/${employmentId}/invite`,
+              await axios.post(
+                `/api/v1/employments/${employmentId.current}/invite`,
                 {},
                 {
                   headers: {
@@ -174,97 +192,44 @@ export function EmploymentCreationPage() {
         }`
       );
     }
-  };
+  }
 
   const handleStartOver = () => {
+    employmentId.current = null;
     setInitialFormValues(null);
-    setEmploymentId(null);
-    setIsContractDetails(false);
     setSubmissionStatus(null);
     setError(null);
   };
 
-  const handleCredsSubmit = (values) => {
-    setCreds(values);
-  };
+  if (isLoading) {
+    return <Loading />;
+  }
 
-  const initialFormFields = [
-    {
-      name: "country_code",
-      label: "Country Code",
-      type: "text",
-      defaultValue: "",
-    },
-    {
-      name: "type",
-      label: "Type of Employee",
-      type: "select",
-      options: [
-        { value: "employee", label: "Employee" },
-        { value: "contractor", label: "Contractor" },
-      ],
-      defaultValue: "",
-    },
-    {
-      name: "pricing_plan",
-      label: "Pricing Plan",
-      type: "select",
-      options: [
-        { value: "monthly", label: "Monthly" },
-        { value: "annually", label: "Annually" },
-      ],
-      defaultValue: "",
-    },
-    {
-      name: "send_self_enrollment_invitation",
-      label: "Send Self-Enrollment Invitation",
-      type: "checkbox",
-      defaultValue: false,
-    },
-  ];
-
-  const validationSchema = Yup.object({
-    country_code: Yup.string().required("Country code is required"),
-    type: Yup.string().required("Type of employee is required"),
-    pricing_plan: Yup.string().required("Pricing plan is required"),
-    send_self_enrollment_invitation: Yup.boolean(),
-  });
+  if (error) {
+    return <p className="error">{error}</p>;
+  }
 
   return (
     <>
-      <div className="flex justify-between p-5">
-        <HomeButton to="/" />
-        <CredentialsForm initialValues={creds} onSubmit={handleCredsSubmit} />
-      </div>
       {!initialFormValues ? (
         <DynamicForm
           fields={initialFormFields}
           validationSchema={validationSchema}
           onSubmit={handleInitialFormSubmit}
-          disableSubmit={Object.values(creds).some((value) => !value)}
         />
       ) : (
         <>
-          {isLoading ? (
-            <Loading />
-          ) : submissionStatus ? (
+          {submissionStatus ? (
             <div className="form-area">
-              {error && <p className="error">{error}</p>}
               <h2>{submissionStatus}</h2>
-              {error && <p className="error">{error}</p>}
               <Button onClick={handleStartOver}>Start Over</Button>
             </div>
           ) : (
             <div className="flex flex-col items-center">
               <h2 className="h2">Employment Information Form</h2>
               {jsonSchema && (
-                <Form
-                  jsonSchema={jsonSchema}
-                  onSubmit={handleSubmit}
-                  isContractDetails={isContractDetails}
-                />
+                <Form jsonSchema={jsonSchema} onSubmit={handleSubmit} />
               )}
-              {error && <p className="error">{error}</p>}
             </div>
           )}
         </>
