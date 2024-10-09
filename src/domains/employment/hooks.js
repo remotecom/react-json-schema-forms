@@ -1,71 +1,40 @@
-import axios from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { getAccessToken } from "@/utils/auth-utils.js";
+import { customerApiClient } from "@/lib/api";
 
 async function fetchEmploymentBasicInformation(countryCode) {
-  const accessToken = await getAccessToken();
-  const response = await axios.get(
-    `/api/v1/countries/${countryCode}/employment_basic_information`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
+  const response = await customerApiClient.get(
+    `/api/v1/countries/${countryCode}/employment_basic_information`
   );
   return response.data;
 }
 
 async function fetchEmploymentContractDetails(countryCode) {
-  const accessToken = await getAccessToken();
-  const response = await axios.get(
-    `/api/v1/countries/${countryCode}/contract_details`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
+  const response = await customerApiClient.get(
+    `/api/v1/countries/${countryCode}/contract_details`
   );
   return response.data;
 }
 
 async function fetchEmployment({ bodyParams }) {
-  const accessToken = await getAccessToken();
-  const response = await axios.post("/api/v1/employments", bodyParams, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+  const response = await customerApiClient.post(
+    "/api/v1/employments",
+    bodyParams
+  );
   return response.data;
 }
 
 async function patchEmployment(employmentId, { bodyParams }) {
-  const accessToken = await getAccessToken();
-  const response = await axios.patch(
+  const response = await customerApiClient.patch(
     `/api/v1/employments/${employmentId}`,
-    bodyParams,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
+    bodyParams
   );
   return response.data;
 }
 
 async function fetchEmploymentInvite(employmentId) {
-  const accessToken = await getAccessToken();
-  const response = await axios.post(
-    `/api/v1/employments/${employmentId}/invite`,
-    {},
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
+  const response = await customerApiClient.post(
+    `/api/v1/employments/${employmentId}/invite`
   );
   return response.data;
 }

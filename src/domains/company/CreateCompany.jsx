@@ -54,7 +54,7 @@ export function CompanyCreation() {
   }
 
   if (isError) {
-    return <p className="error">{error}</p>;
+    return <p className="error">Error creating a company: {error.message}</p>;
   }
 
   return (

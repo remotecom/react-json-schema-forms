@@ -1,29 +1,18 @@
-import axios from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { getClientCredentialsToken } from "@/utils/auth-utils.js";
+import { partnerApiClient } from "@/lib/api";
 
 async function fetchCountries() {
-  const accessToken = await getClientCredentialsToken();
-  const response = await axios.get("/api/v1/cost-calculator/countries", {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+  const response = await partnerApiClient.get(
+    "/api/v1/cost-calculator/countries"
+  );
   return response.data;
 }
 
 async function fetchEstimation(payload) {
-  const accessToken = await getClientCredentialsToken();
-  const response = await axios.post(
+  const response = await partnerApiClient.post(
     `/api/v1/cost-calculator/estimation`,
-    payload,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
+    payload
   );
   return response.data;
 }

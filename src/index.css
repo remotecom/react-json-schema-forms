@@ -36,7 +36,7 @@
   }
 
   .error {
-    @apply text-error text-sm;
+    @apply text-error text-sm text-center;
   }
 
   .result-area {

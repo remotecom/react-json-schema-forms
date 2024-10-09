@@ -1,32 +1,18 @@
-import axios from "axios";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { getClientCredentialsToken } from "@/utils/auth-utils.js";
+import { partnerApiClient } from "@/lib/api";
 
 async function fetchJsonSchema(countryCode) {
-  const accessToken = await getClientCredentialsToken();
-  const response = await axios.get(
-    `/api/v1/companies/schema?country_code=${countryCode}&form=address_details`,
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
+  const response = await partnerApiClient.get(
+    `/api/v1/companies/schema?country_code=${countryCode}&form=address_details`
   );
   return response.data;
 }
 
 async function fetchCompany({ queryParams, bodyParams }) {
-  const accessToken = await getClientCredentialsToken();
-  const response = await axios.post(
+  const response = await partnerApiClient.post(
     `/api/v1/companies${queryParams}`,
-    bodyParams,
-    {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
+    bodyParams
   );
   return response.data;
 }
