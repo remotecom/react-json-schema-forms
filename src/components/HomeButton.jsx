@@ -1,11 +1,12 @@
-import revolutLogo from "@/assets/partners/revolut.svg";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+
+import theme from "@/theme.json";
 
 export function HomeButton({ to }) {
   return (
     <Link className="inline-block" to={to}>
-      <img src={revolutLogo} alt="home" />
+      <img src={theme.logo.src} alt={theme.logo.alt} />
     </Link>
   );
 }

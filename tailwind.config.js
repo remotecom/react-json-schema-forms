@@ -1,12 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
-const colors = {
-  black: "#000000",
-  blank: "#ffffff",
-  primary: "#191c1f",
-  secondary: "#8d969e",
-  error: "#FF4A5A",
-};
+import { colors } from "./src/theme.json";
 
 export default {
   darkMode: ["class"],

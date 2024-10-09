@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 export function HomePage() {
   return (
     <div className="result-area">
-      <h1 className="h1 text-primary">Experience Remote Embedded</h1>
+      <h1 className="h1">Experience Remote Embedded</h1>
       <div className="flex gap-4">
         <Button asChild>
           <Link to="/create-company">Create a Company</Link>

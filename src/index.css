@@ -20,19 +20,19 @@
   }
 
   .input {
-    @apply border border-primary rounded-lg p-1 w-full;
+    @apply border border-input rounded-lg p-1 w-full;
   }
 
   .textarea {
-    @apply border border-primary rounded-lg p-1 w-full;
+    @apply border border-input rounded-lg p-1 w-full;
   }
 
   .select {
-    @apply border border-primary rounded-lg p-1 w-full;
+    @apply border border-input rounded-lg p-1 w-full;
   }
 
   .fieldset {
-    @apply border border-solid border-primary rounded-lg p-4;
+    @apply border border-solid border-input rounded-lg p-4;
   }
 
   .error {
