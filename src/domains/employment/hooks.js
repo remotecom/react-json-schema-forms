@@ -110,7 +110,6 @@ const useEmploymentContractDetails = (countryCode, employmentId) => {
  * @returns {import("@tanstack/react-query").UseMutationResult}
  */
 export const useCreateEmployment = (options) => {
-  console.log("options", options);
   return useMutation({
     mutationFn: fetchEmployment,
     ...options,
