@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 function Section({ level, children }) {
   return (
     <div
@@ -11,7 +12,12 @@ function Section({ level, children }) {
   );
 }
 
-const DisplayResult = ({ data, level = 0 }) => {
+Section.propTypes = {
+  level: PropTypes.number.isRequired,
+  children: PropTypes.node.isRequired,
+};
+
+export const Result = ({ data, level = 0 }) => {
   const renderData = (key, value, currentLevel) => {
     if (typeof value === "object" && value !== null) {
       if (Array.isArray(value)) {
@@ -79,4 +85,7 @@ const DisplayResult = ({ data, level = 0 }) => {
   );
 };
 
-export default DisplayResult;
+Result.propTypes = {
+  data: PropTypes.object.isRequired,
+  level: PropTypes.number,
+};

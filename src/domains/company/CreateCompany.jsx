@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import Form from "@/components/ui/form/Form.jsx";
 import DynamicForm from "@/components/ui/form/DynamicForm.jsx";
-import DisplayResult from "@/components/DisplayResult.jsx";
+import { Result } from "@/components/Result.jsx";
 import { Loading } from "@/components/Loading.jsx";
 import { Button } from "@/components/ui/Button.jsx";
 import { fields, validationSchema } from "./fields";
@@ -70,7 +70,7 @@ export function CompanyCreation() {
           {responseData ? (
             <div className="result-area">
               <h2 className="h2">Company created successfully!</h2>
-              <DisplayResult data={responseData} />
+              <Result data={responseData} />
               <Button onClick={() => window.location.reload()}>
                 Start Over
               </Button>

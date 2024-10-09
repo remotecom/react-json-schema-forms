@@ -1,5 +1,5 @@
 import DynamicForm from "@/components/ui/form/DynamicForm.jsx";
-import DisplayResult from "@/components/DisplayResult.jsx";
+import { Result } from "@/components/Result.jsx";
 import { Button } from "@/components/ui/Button.jsx";
 import { Loading } from "@/components/Loading.jsx";
 import { useCredentials } from "@/domains/shared/credentials/useCredentials.js";
@@ -95,8 +95,8 @@ export function CostCalculator() {
       {isSuccess && (
         <div className="result-area">
           <h2 className="h2">Calculation Result</h2>
-          <DisplayResult data={result.data} />
-          <Button onClick={() => setResult(null)}>Start Over</Button>
+          <Result data={result.data} />
+          <Button onClick={() => window.location.reload()}>Start Over</Button>
         </div>
       )}
     </>
