@@ -1,23 +1,24 @@
-import { StyledLinkButton, ResultArea } from "@/App.styled.jsx";
+import { Button } from "@/components/ui/Button.jsx";
+import { Link } from "react-router-dom";
 
 export function HomePage() {
   return (
-    <ResultArea>
-      <h1>Experience Remote Embedded</h1>
-      <div style={{ margin: "20px 0", display: "flex", gap: "10px" }}>
-        <StyledLinkButton to="/create-company">
-          Create a Company
-        </StyledLinkButton>
-        <StyledLinkButton to="/create-employment">
-          Create Employment
-        </StyledLinkButton>
-        <StyledLinkButton to="/cost-calculator">
-          Cost Calculator
-        </StyledLinkButton>
+    <div className="result-area">
+      <h1 className="h1">Experience Remote Embedded</h1>
+      <div className="flex gap-4">
+        <Button asChild>
+          <Link to="/create-company">Create a Company</Link>
+        </Button>
+        <Button asChild>
+          <Link to="/create-employment">Create Employment</Link>
+        </Button>
+        <Button asChild>
+          <Link to="/cost-calculator">Cost Calculator</Link>
+        </Button>
       </div>
       {/* Static Section for Overview */}
-      <section style={{ marginTop: "40px" }}>
-        <h2>About This Tool</h2>
+      <section className="mt-6">
+        <h2 className="h2">About This Tool</h2>
         <p>
           This tool is designed to help partners quickly, easily, and
           efficiently adopt and extend JSON schemas within their own platforms.
@@ -32,7 +33,7 @@ export function HomePage() {
           library, the codebase behind this app provides a solid foundation for
           rendering, validating, and handling submissions of JSON schemas.
         </p>
-        <h3>Key Features</h3>
+        <h3 className="h3">Key Features</h3>
         <ul>
           <li>
             <strong>JSON Schema Adoption:</strong> This tool simplifies the
@@ -57,7 +58,7 @@ export function HomePage() {
             fit their specific needs and workflows.
           </li>
         </ul>
-        <h3>JSON Schema Resources</h3>
+        <h3 className="h3">JSON Schema Resources</h3>
         <p>
           To learn more about JSON schemas and how they can be utilized in your
           applications, check out the{" "}
@@ -70,7 +71,7 @@ export function HomePage() {
           </a>
           .
         </p>
-        <h3>App Flows</h3>
+        <h3 className="h3">App Flows</h3>
         <p>This tool includes two main example flows:</p>
         <ul>
           <li>
@@ -102,7 +103,7 @@ export function HomePage() {
           form management and validation handled by the
           `remoteoss/json-schema-form` library.
         </p>
-        <h3>Partnering with Remote</h3>
+        <h3 className="h3">Partnering with Remote</h3>
         <p>
           If you're interested in partnering with Remote, this tool demonstrates
           the ease with which you can integrate JSON schema based forms and
@@ -111,6 +112,6 @@ export function HomePage() {
           companies and employment relationships globally.
         </p>
       </section>
-    </ResultArea>
+    </div>
   );
 }

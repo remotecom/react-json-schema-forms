@@ -2,16 +2,6 @@ import {
   Field as FormikField,
   ErrorMessage as FormikErrorMessage,
 } from "formik";
-import {
-  Label,
-  Error,
-  Hint,
-  LabelRadio,
-  FieldsetStyled,
-  FieldsetRadioStyled,
-  CheckboxField,
-  RadioDescription,
-} from "@/App.styled.jsx";
 import * as Dialog from "@radix-ui/react-dialog";
 
 // Helper component to render descriptions with support for help center dialogs
@@ -19,7 +9,7 @@ export const Description = ({ description, helpCenter }) => {
   const { callToAction, title, content, error } = helpCenter || {};
 
   return (
-    <Hint>
+    <p className="text-sm text-primary my-1">
       {description && typeof description === "string" ? (
         <span dangerouslySetInnerHTML={{ __html: description }} />
       ) : (
@@ -43,7 +33,7 @@ export const Description = ({ description, helpCenter }) => {
           </Dialog.Portal>
         </Dialog.Root>
       )}
-    </Hint>
+    </p>
   );
 };
 
@@ -51,14 +41,16 @@ export const Description = ({ description, helpCenter }) => {
 function FieldText({ type, name, label, description, meta }) {
   return (
     <div key={name}>
-      <Label htmlFor={name}>{label}</Label>
-      <FormikField type={type} name={name} id={name} />
+      <label className="block mb-1" htmlFor={name}>
+        {label}
+      </label>
+      <FormikField type={type} name={name} id={name} className="input" />
       <Description description={description} helpCenter={meta?.helpCenter} />
-      <Error>
+      <p className="error">
         <FormikErrorMessage name={name}>
           {(msg) => meta?.["x-jsf-errorMessage"] || msg}
         </FormikErrorMessage>
-      </Error>
+      </p>
     </div>
   );
 }
@@ -67,17 +59,19 @@ function FieldText({ type, name, label, description, meta }) {
 function FieldCheckbox({ type, name, label, description, meta }) {
   return (
     <div key={name}>
-      <CheckboxField>
+      <div className="flex">
         <FormikField type={type} name={name} id={name} />
-        <Label htmlFor={name}>{label}</Label>
-      </CheckboxField>
+        <label className="block mb-1" htmlFor={name}>
+          {label}
+        </label>
+      </div>
       <div>
         <Description description={description} helpCenter={meta?.helpCenter} />
-        <Error>
+        <p className="error">
           <FormikErrorMessage name={name}>
             {(msg) => meta?.["x-jsf-errorMessage"] || msg}
           </FormikErrorMessage>
-        </Error>
+        </p>
       </div>
     </div>
   );
@@ -87,14 +81,16 @@ function FieldCheckbox({ type, name, label, description, meta }) {
 function FieldTextarea({ name, label, description, meta }) {
   return (
     <div key={name}>
-      <Label htmlFor={name}>{label}</Label>
-      <FormikField as="textarea" name={name} id={name} />
+      <label className="block mb-1" htmlFor={name}>
+        {label}
+      </label>
+      <FormikField as="textarea" name={name} id={name} className="textarea" />
       <Description description={description} helpCenter={meta?.helpCenter} />
-      <Error>
+      <p className="error">
         <FormikErrorMessage name={name}>
           {(msg) => meta?.["x-jsf-errorMessage"] || msg}
         </FormikErrorMessage>
-      </Error>
+      </p>
     </div>
   );
 }
@@ -102,8 +98,16 @@ function FieldTextarea({ name, label, description, meta }) {
 function FieldSelect({ name, label, description, options, meta }) {
   return (
     <div key={name}>
-      <Label htmlFor={name}>{label}</Label>
-      <FormikField as="select" name={name} id={name} placeholder="select...">
+      <label className="block mb-1" htmlFor={name}>
+        {label}
+      </label>
+      <FormikField
+        as="select"
+        name={name}
+        id={name}
+        placeholder="select..."
+        className="select"
+      >
         <option disabled value="">
           Select...
         </option>
@@ -114,11 +118,11 @@ function FieldSelect({ name, label, description, options, meta }) {
         ))}
       </FormikField>
       <Description description={description} helpCenter={meta?.helpCenter} />
-      <Error>
+      <p className="error">
         <FormikErrorMessage name={name}>
           {(msg) => meta?.["x-jsf-errorMessage"] || msg}
         </FormikErrorMessage>
-      </Error>
+      </p>
     </div>
   );
 }
@@ -126,24 +130,31 @@ function FieldSelect({ name, label, description, options, meta }) {
 // Field component for radio buttons
 function FieldRadio({ name, label, description, options, meta }) {
   return (
-    <FieldsetRadioStyled key={name}>
-      <Label as="legend">{label}</Label>
+    <fieldset key={name}>
+      <label className="block mb-1" as="legend">
+        {label}
+      </label>
       <Description description={description} helpCenter={meta?.helpCenter} />
       {options.map((opt) => (
         <span key={opt.value}>
-          <LabelRadio>
-            <FormikField type="radio" name={name} value={opt.value} />
+          <label className="flex mr-4 mb-2">
+            <FormikField
+              className="mr-1"
+              type="radio"
+              name={name}
+              value={opt.value}
+            />
             {opt.label}
-          </LabelRadio>
-          <RadioDescription>{opt.description}</RadioDescription>
+          </label>
+          <p className="mb-2 ml-5">{opt.description}</p>
         </span>
       ))}
-      <Error>
+      <p className="error">
         <FormikErrorMessage name={name}>
           {(msg) => meta?.["x-jsf-errorMessage"] || msg}
         </FormikErrorMessage>
-      </Error>
-    </FieldsetRadioStyled>
+      </p>
+    </fieldset>
   );
 }
 
@@ -151,14 +162,16 @@ function FieldRadio({ name, label, description, options, meta }) {
 function FieldEmail({ name, label, description, meta }) {
   return (
     <div key={name}>
-      <Label htmlFor={name}>{label}</Label>
-      <FormikField type="email" name={name} id={name} />
+      <label className="block mb-1" htmlFor={name}>
+        {label}
+      </label>
+      <FormikField className="input" type="email" name={name} id={name} />
       <Description description={description} helpCenter={meta?.helpCenter} />
-      <Error>
+      <p className="error">
         <FormikErrorMessage name={name}>
           {(msg) => meta?.["x-jsf-errorMessage"] || msg}
         </FormikErrorMessage>
-      </Error>
+      </p>
     </div>
   );
 }
@@ -170,7 +183,7 @@ function FieldsetHidden({ name, label, description, fields }) {
   }
 
   return (
-    <FieldsetStyled key={name}>
+    <fieldset className="fieldset" key={name}>
       <legend>{label}</legend>
       {description && <p>{description}</p>}
 
@@ -187,14 +200,14 @@ function FieldsetHidden({ name, label, description, fields }) {
 
         return null;
       })}
-    </FieldsetStyled>
+    </fieldset>
   );
 }
 
 // General fieldset component
 function Fieldset({ name, label, description, fields }) {
   return (
-    <FieldsetStyled key={name}>
+    <fieldset className="fieldset">
       <legend>{label}</legend>
       <Description description={description} />
 
@@ -211,10 +224,10 @@ function Fieldset({ name, label, description, fields }) {
             name={`${name}.${field.name}`}
           />
         ) : (
-          <Error>Field type {field.type} not supported</Error>
+          <p className="error">Field type {field.type} not supported</p>
         );
       })}
-    </FieldsetStyled>
+    </fieldset>
   );
 }
 
@@ -231,4 +244,5 @@ export const fieldsMapConfig = {
   number: (props) => <FieldText {...props} type="text" />,
   money: (props) => <FieldText {...props} type="text" />,
   fieldset: Fieldset,
+  countries: FieldSelect,
 };

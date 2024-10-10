@@ -1,13 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { modify, createHeadlessForm } from "@remoteoss/json-schema-form";
-import {
-  Formik,
-  Form as FormikForm,
-  Field as FormikField,
-  ErrorMessage as FormikErrorMessage,
-} from "formik";
-import { GlobalStyle, FormArea, Error } from "@/App.styled.jsx";
-import { fieldsMapConfig } from "@/components/form/Fields.jsx";
+import { Formik, Form as FormikForm } from "formik";
+import { fieldsMapConfig } from "@/components/ui/form/Fields.jsx";
+import { Button } from "@/components/ui/Button.jsx";
 
 const COMPONENT_KEY = "Component";
 
@@ -107,11 +102,7 @@ function formValuesToJsonValues(values, fields) {
   return jsonValues;
 }
 
-export default function MyFormComponent({
-  jsonSchema,
-  onSubmit,
-  isContractDetails,
-}) {
+export default function Form({ jsonSchema, onSubmit }) {
   const [modifiedSchema, setModifiedSchema] = useState(null);
 
   useEffect(() => {
@@ -158,43 +149,40 @@ export default function MyFormComponent({
   }
 
   return (
-    <div>
-      <Formik
-        initialValues={initialValues}
-        validate={handleValidate}
-        onSubmit={handleFormSubmit}
-      >
-        {({ isSubmitting, errors }) => (
-          <FormikForm>
-            <FormArea>
-              {fields.map((field) => {
-                if (field.isVisible === false || field.deprecated) {
-                  return null; // Skip hidden or deprecated fields
-                }
+    <Formik
+      initialValues={initialValues}
+      validate={handleValidate}
+      onSubmit={handleFormSubmit}
+    >
+      {({ isSubmitting, errors }) => (
+        <div className="form-area">
+          <FormikForm className="form">
+            {fields.map((field) => {
+              if (field.isVisible === false || field.deprecated) {
+                return null; // Skip hidden or deprecated fields
+              }
 
-                if (hasForcedValue(field)) {
-                  // Skip fields with forced values or implement custom logic
-                  return null; // Customize or omit this based on your needs
-                }
+              if (hasForcedValue(field)) {
+                // Skip fields with forced values or implement custom logic
+                return null; // Customize or omit this based on your needs
+              }
 
-                const FieldComponent =
-                  field[COMPONENT_KEY] || fieldsMapConfig[field.inputType];
+              const FieldComponent =
+                field[COMPONENT_KEY] || fieldsMapConfig[field.inputType];
 
-                return FieldComponent ? (
-                  <FieldComponent key={field.name} {...field} />
-                ) : (
-                  <Error>Field type {field.inputType} not supported</Error>
-                );
-              })}
+              return FieldComponent ? (
+                <FieldComponent key={field.name} {...field} />
+              ) : (
+                <p className="error">
+                  Field type {field.inputType} not supported
+                </p>
+              );
+            })}
 
-              <button type="submit" aria-disabled={isSubmitting}>
-                Submit
-              </button>
-            </FormArea>
+            <Button type="submit">Submit</Button>
           </FormikForm>
-        )}
-      </Formik>
-      <GlobalStyle />
-    </div>
+        </div>
+      )}
+    </Formik>
   );
 }

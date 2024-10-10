@@ -1,13 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .h1 {
+    @apply text-3xl my-6;
+  }
+
+  .h2 {
+    @apply text-2xl my-4;
+  }
+
+  .h3 {
+    @apply text-xl my-2;
+  }
+
+  .form {
+    @apply flex flex-col gap-y-4 w-full;
+  }
+
+  .input {
+    @apply border border-input rounded-lg p-1 w-full;
+  }
+
+  .textarea {
+    @apply border border-input rounded-lg p-1 w-full;
+  }
+
+  .select {
+    @apply border border-input rounded-lg p-1 w-full;
+  }
+
+  .fieldset {
+    @apply border border-solid border-input rounded-lg p-4;
+  }
+
+  .error {
+    @apply text-error text-sm text-center;
+  }
+
+  .result-area {
+    @apply flex flex-col items-center p-5 m-5 rounded-lg overflow-x-auto bg-blank;
+  }
+
+  .form-area {
+    @apply flex flex-col items-center max-w-sm p-4 my-0 mb-2 mx-auto rounded-lg bg-blank;
+  }
+}
+
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  font-family: Sans-Serif;
+  box-sizing: border-box;
+  background-color: #f7f7f7;
+
+  * {
+    box-sizing: inherit;
+  }
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
 }
