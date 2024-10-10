@@ -19,20 +19,24 @@
     @apply flex flex-col gap-y-4 w-full;
   }
 
+  .label {
+    @apply block mb-1 text-sm;
+  }
+
   .input {
-    @apply border border-input rounded-lg p-1 w-full;
+    @apply border border-input rounded-lg p-1 w-full text-sm;
   }
 
   .textarea {
-    @apply border border-input rounded-lg p-1 w-full;
+    @apply border border-input rounded-lg p-1 w-full text-sm;
   }
 
   .select {
-    @apply border border-input rounded-lg p-1 w-full;
+    @apply border border-input rounded-lg p-1 w-full text-sm;
   }
 
   .fieldset {
-    @apply border border-solid border-input rounded-lg p-4;
+    @apply border border-solid border-input rounded-lg p-4 text-sm;
   }
 
   .error {
@@ -40,7 +44,7 @@
   }
 
   .result-area {
-    @apply flex flex-col items-center p-5 m-5 rounded-lg overflow-x-auto bg-blank;
+    @apply flex flex-col items-center p-5 mx-5 rounded-lg overflow-x-auto;
   }
 
   .form-area {

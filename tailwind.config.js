@@ -14,6 +14,9 @@ export default {
     },
     colors,
     backgroundColor: colors,
+    fontFamily: {
+      poppins: ['"Poppins"', "sans-serif"],
+    },
     extend: {
       spacing: {
         128: "32rem",

@@ -57,7 +57,7 @@ export function CredentialsForm() {
           <div className="form-area" style={{ margin: 0, padding: 0 }}>
             <form onSubmit={formik.handleSubmit} className="form">
               <div>
-                <label className="block mb-1" htmlFor="clientId">
+                <label className="label" htmlFor="clientId">
                   Client ID
                 </label>
                 <input
@@ -73,7 +73,7 @@ export function CredentialsForm() {
                 ) : null}
               </div>
               <div>
-                <label className="block mb-1" htmlFor="clientSecret">
+                <label className="label" htmlFor="clientSecret">
                   Client Secret
                 </label>
                 <input
@@ -89,7 +89,7 @@ export function CredentialsForm() {
                 ) : null}
               </div>
               <div>
-                <label className="block mb-1" htmlFor="refreshToken">
+                <label className="label" htmlFor="refreshToken">
                   Refresh Token
                 </label>
                 <input
@@ -105,7 +105,7 @@ export function CredentialsForm() {
                 ) : null}
               </div>
               <div>
-                <label className="block mb-1" htmlFor="gatewayUrl">
+                <label className="label" htmlFor="gatewayUrl">
                   Gateway URL
                 </label>
                 <input

@@ -44,7 +44,7 @@ const DynamicForm = ({ fields, validationSchema, onSubmit }) => {
       <form className="form" onSubmit={formik.handleSubmit}>
         {fields.map((field) => (
           <div key={field.name}>
-            <label className="block mb-1">
+            <label className="label">
               {field.label}
               {field.type === "checkbox" && (
                 <input

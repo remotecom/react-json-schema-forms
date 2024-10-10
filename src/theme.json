@@ -1,6 +1,6 @@
 {
   "logo": {
-    "src": "src/assets/remote.svg",
+    "src": "/remote.svg",
     "alt": "Remote logo"
   },
   "colors": {
@@ -8,7 +8,9 @@
     "blank": "#ffffff",
     "primary": "#0061FF",
     "secondary": "#8d969e",
+    "tertiary": "#FAFCFF",
     "error": "#FF4A5A",
-    "input": "#9AA6B2"
+    "input": "#9AA6B2",
+    "borders": "#E3E9EF"
   }
 }
