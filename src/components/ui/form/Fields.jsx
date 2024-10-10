@@ -41,7 +41,7 @@ export const Description = ({ description, helpCenter }) => {
 function FieldText({ type, name, label, description, meta }) {
   return (
     <div key={name}>
-      <label className="block mb-1" htmlFor={name}>
+      <label className="label" htmlFor={name}>
         {label}
       </label>
       <FormikField type={type} name={name} id={name} className="input" />
@@ -61,7 +61,7 @@ function FieldCheckbox({ type, name, label, description, meta }) {
     <div key={name}>
       <div className="flex">
         <FormikField type={type} name={name} id={name} />
-        <label className="block mb-1" htmlFor={name}>
+        <label className="label" htmlFor={name}>
           {label}
         </label>
       </div>
@@ -81,7 +81,7 @@ function FieldCheckbox({ type, name, label, description, meta }) {
 function FieldTextarea({ name, label, description, meta }) {
   return (
     <div key={name}>
-      <label className="block mb-1" htmlFor={name}>
+      <label className="label" htmlFor={name}>
         {label}
       </label>
       <FormikField as="textarea" name={name} id={name} className="textarea" />
@@ -98,7 +98,7 @@ function FieldTextarea({ name, label, description, meta }) {
 function FieldSelect({ name, label, description, options, meta }) {
   return (
     <div key={name}>
-      <label className="block mb-1" htmlFor={name}>
+      <label className="label" htmlFor={name}>
         {label}
       </label>
       <FormikField
@@ -131,7 +131,7 @@ function FieldSelect({ name, label, description, options, meta }) {
 function FieldRadio({ name, label, description, options, meta }) {
   return (
     <fieldset key={name}>
-      <label className="block mb-1" as="legend">
+      <label className="label" as="legend">
         {label}
       </label>
       <Description description={description} helpCenter={meta?.helpCenter} />
@@ -162,7 +162,7 @@ function FieldRadio({ name, label, description, options, meta }) {
 function FieldEmail({ name, label, description, meta }) {
   return (
     <div key={name}>
-      <label className="block mb-1" htmlFor={name}>
+      <label className="label" htmlFor={name}>
         {label}
       </label>
       <FormikField className="input" type="email" name={name} id={name} />

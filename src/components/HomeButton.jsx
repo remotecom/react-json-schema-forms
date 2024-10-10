@@ -5,7 +5,7 @@ import theme from "@/theme.json";
 
 export function HomeButton({ to }) {
   return (
-    <Link className="inline-block" to={to}>
+    <Link to={to}>
       <img src={theme.logo.src} alt={theme.logo.alt} />
     </Link>
   );
