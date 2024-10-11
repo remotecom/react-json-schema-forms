@@ -29,7 +29,7 @@ function getSchemaFromQueryParam(schemaParam) {
  * @returns {Object} A new object with the mapped keys.
  */
 function mapKeys(obj, fn) {
-  Object.keys(obj).reduce((result, current) => {
+  return Object.keys(obj).reduce((result, current) => {
     if (typeof obj[current] == "object") {
       result[fn(current)] = mapKeys(obj[current], fn);
       return result;
@@ -85,6 +85,12 @@ export function JSONSchemaPlayground() {
             <Link to="/playground?schema=address-details">Address Details</Link>
           </li>
         </ul>
+        <div className="text-xs p-2 mt-8 border border-input rounded-lg">
+          <span className="font-bold">Disclaimer:</span> These are static JSON
+          Schemas and may be outdated. This page is intended solely to help
+          understand how forms are rendered based on JSON Schemas and the
+          generated payload.
+        </div>
       </div>
       <div className="grow basis-2/4 flex flex-col items-center">
         <Form
