@@ -103,6 +103,7 @@ export function JSONSchemaPlayground() {
               (key) => `<span>${key}</span>`
             );
             setResult(wrapObjectKeysWithSpan);
+            window.scrollTo({ top: 0, behavior: "smooth" });
           }}
         />
       </div>
