@@ -3,7 +3,7 @@ export function HomePage() {
     <>
       <h1 className="h1 self-start m-0">Experience Remote Embedded</h1>
       {/* Static Section for Overview */}
-      <section className="flex flex-col gap-y-6">
+      <section className="flex flex-col gap-y-6 mt-4">
         <div>
           <h3 className="h3">About This Tool</h3>
           <p>
@@ -82,11 +82,11 @@ export function HomePage() {
             </li>
           </ul>
           <p>
-            These flows represent the employer's journey up to the point where
-            the employee receives a self-enrollment email. After this point,
-            both the employer and employee can continue their journey on the
-            Remote platform, which handles the ongoing employment relationship,
-            compliance, and payroll processes.
+            These flows represent the employer&apos;s journey up to the point
+            where the employee receives a self-enrollment email. After this
+            point, both the employer and employee can continue their journey on
+            the Remote platform, which handles the ongoing employment
+            relationship, compliance, and payroll processes.
           </p>
           <br></br>
 
@@ -100,7 +100,7 @@ export function HomePage() {
         <div>
           <h3 className="h3">Partnering with Remote</h3>
           <p>
-            If you're interested in partnering with Remote, this tool
+            If you&apos;re interested in partnering with Remote, this tool
             demonstrates the ease with which you can integrate JSON schema based
             forms and workflows into your product. By leveraging this codebase,
             you can offer your clients a powerful and compliant experience for
