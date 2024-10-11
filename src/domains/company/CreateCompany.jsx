@@ -6,11 +6,11 @@ import { Result } from "@/components/Result.jsx";
 import { Loading } from "@/components/Loading.jsx";
 import { Button } from "@/components/ui/Button.jsx";
 import { fields, validationSchema } from "./fields";
-import { useCompany, useJsonSchema } from "./hooks";
+import { useCompany, useCompanyJsonSchema } from "./hooks";
 
 export function CompanyCreation() {
   const [initialFormValues, setInitialFormValues] = useState();
-  const { data: jsonSchema, isLoading } = useJsonSchema(
+  const { data: jsonSchema, isLoading } = useCompanyJsonSchema(
     initialFormValues?.country_code
   );
   const {

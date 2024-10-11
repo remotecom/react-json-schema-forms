@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { partnerApiClient } from "@/lib/api";
 
-async function fetchJsonSchema(countryCode) {
+async function fetchCompanyJsonSchema(countryCode) {
   const response = await partnerApiClient.get(
     `/api/v1/companies/schema?country_code=${countryCode}&form=address_details`
   );
@@ -18,13 +18,13 @@ async function fetchCompany({ queryParams, bodyParams }) {
 }
 
 /**
- * Fetches the supported countries list
+ * Fetches JSON Schema for the company form
  * @returns {import("@tanstack/react-query").UseQueryResult}
  */
-export const useJsonSchema = (countryCode) => {
+export const useCompanyJsonSchema = (countryCode) => {
   return useQuery({
     queryKey: ["json-schema", countryCode],
-    queryFn: () => fetchJsonSchema(countryCode),
+    queryFn: () => fetchCompanyJsonSchema(countryCode),
     select: (data) => data.data,
     enabled: !!countryCode,
   });

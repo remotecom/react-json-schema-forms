@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+
 import { modify, createHeadlessForm } from "@remoteoss/json-schema-form";
 import { Formik, Form as FormikForm } from "formik";
 import { fieldsMapConfig } from "@/components/ui/form/Fields.jsx";
 import { Button } from "@/components/ui/Button.jsx";
+import { cn } from "@/lib/utils";
 
 const COMPONENT_KEY = "Component";
 
@@ -102,7 +105,7 @@ function formValuesToJsonValues(values, fields) {
   return jsonValues;
 }
 
-export default function Form({ jsonSchema, onSubmit }) {
+export default function Form({ jsonSchema, onSubmit, className }) {
   const [modifiedSchema, setModifiedSchema] = useState(null);
 
   useEffect(() => {
@@ -121,7 +124,7 @@ export default function Form({ jsonSchema, onSubmit }) {
   }, [jsonSchema]);
 
   if (!modifiedSchema) {
-    return <div>Loading form...</div>;
+    return null;
   }
 
   const API_STORED_VALUES = {}; // Set this with any stored values if available
@@ -155,7 +158,7 @@ export default function Form({ jsonSchema, onSubmit }) {
       onSubmit={handleFormSubmit}
     >
       {({ isSubmitting, errors }) => (
-        <div className="form-area">
+        <div className={cn("form-area", className)}>
           <FormikForm className="form">
             {fields.map((field) => {
               if (field.isVisible === false || field.deprecated) {
@@ -186,3 +189,9 @@ export default function Form({ jsonSchema, onSubmit }) {
     </Formik>
   );
 }
+
+Form.propTypes = {
+  jsonSchema: PropTypes.object.isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  className: PropTypes.string,
+};

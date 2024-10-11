@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 import {
   Field as FormikField,
   ErrorMessage as FormikErrorMessage,
@@ -5,11 +7,11 @@ import {
 import * as Dialog from "@radix-ui/react-dialog";
 
 // Helper component to render descriptions with support for help center dialogs
-export const Description = ({ description, helpCenter }) => {
+const Description = ({ description, helpCenter }) => {
   const { callToAction, title, content, error } = helpCenter || {};
 
   return (
-    <p className="text-sm text-primary my-1">
+    <p className="text-xs text-secondary my-1">
       {description && typeof description === "string" ? (
         <span dangerouslySetInnerHTML={{ __html: description }} />
       ) : (
@@ -37,6 +39,16 @@ export const Description = ({ description, helpCenter }) => {
   );
 };
 
+Description.propTypes = {
+  description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+  helpCenter: PropTypes.shape({
+    callToAction: PropTypes.string,
+    title: PropTypes.string,
+    content: PropTypes.string,
+    error: PropTypes.string,
+  }),
+};
+
 // Field component for text input
 function FieldText({ type, name, label, description, meta }) {
   return (
@@ -54,6 +66,14 @@ function FieldText({ type, name, label, description, meta }) {
     </div>
   );
 }
+
+FieldText.propTypes = {
+  type: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  description: PropTypes.string,
+  meta: PropTypes.object,
+};
 
 // Field component for checkbox input
 function FieldCheckbox({ type, name, label, description, meta }) {
@@ -77,6 +97,14 @@ function FieldCheckbox({ type, name, label, description, meta }) {
   );
 }
 
+FieldCheckbox.propTypes = {
+  type: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  description: PropTypes.string,
+  meta: PropTypes.object,
+};
+
 // Field component for textarea input
 function FieldTextarea({ name, label, description, meta }) {
   return (
@@ -94,6 +122,13 @@ function FieldTextarea({ name, label, description, meta }) {
     </div>
   );
 }
+
+FieldTextarea.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  description: PropTypes.string,
+  meta: PropTypes.object,
+};
 
 function FieldSelect({ name, label, description, options, meta }) {
   return (
@@ -127,17 +162,28 @@ function FieldSelect({ name, label, description, options, meta }) {
   );
 }
 
+FieldSelect.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  description: PropTypes.string,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  meta: PropTypes.object,
+};
+
 // Field component for radio buttons
 function FieldRadio({ name, label, description, options, meta }) {
   return (
     <fieldset key={name}>
-      <label className="label" as="legend">
-        {label}
-      </label>
+      <label className="label">{label}</label>
       <Description description={description} helpCenter={meta?.helpCenter} />
       {options.map((opt) => (
         <span key={opt.value}>
-          <label className="flex mr-4 mb-2">
+          <label className="text-sm flex mr-4 mb-2">
             <FormikField
               className="mr-1"
               type="radio"
@@ -146,7 +192,7 @@ function FieldRadio({ name, label, description, options, meta }) {
             />
             {opt.label}
           </label>
-          <p className="mb-2 ml-5">{opt.description}</p>
+          <p className="text-secondary text-xs mb-2 ml-5">{opt.description}</p>
         </span>
       ))}
       <p className="error">
@@ -157,6 +203,20 @@ function FieldRadio({ name, label, description, options, meta }) {
     </fieldset>
   );
 }
+
+FieldRadio.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  description: PropTypes.string,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      value: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+      description: PropTypes.string,
+    })
+  ).isRequired,
+  meta: PropTypes.object,
+};
 
 // Field component for email input
 function FieldEmail({ name, label, description, meta }) {
@@ -175,6 +235,13 @@ function FieldEmail({ name, label, description, meta }) {
     </div>
   );
 }
+
+FieldEmail.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  description: PropTypes.string,
+  meta: PropTypes.object,
+};
 
 // Field component for hidden fields within a fieldset
 function FieldsetHidden({ name, label, description, fields }) {
@@ -204,6 +271,20 @@ function FieldsetHidden({ name, label, description, fields }) {
   );
 }
 
+FieldsetHidden.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  description: PropTypes.string,
+  fields: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      isVisible: PropTypes.bool,
+      deprecated: PropTypes.bool,
+      type: PropTypes.string,
+    })
+  ),
+};
+
 // General fieldset component
 function Fieldset({ name, label, description, fields }) {
   return (
@@ -230,6 +311,20 @@ function Fieldset({ name, label, description, fields }) {
     </fieldset>
   );
 }
+
+Fieldset.propTypes = {
+  name: PropTypes.string.isRequired,
+  label: PropTypes.string,
+  description: PropTypes.string,
+  fields: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      isVisible: PropTypes.bool,
+      deprecated: PropTypes.bool,
+      type: PropTypes.string,
+    })
+  ),
+};
 
 // Mapping of field types to their respective components
 export const fieldsMapConfig = {

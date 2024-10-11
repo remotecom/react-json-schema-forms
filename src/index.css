@@ -40,7 +40,7 @@
   }
 
   .error {
-    @apply text-error text-sm text-center;
+    @apply text-error text-xs;
   }
 
   .result-area {

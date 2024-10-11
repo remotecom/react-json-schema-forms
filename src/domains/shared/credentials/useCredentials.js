@@ -9,6 +9,8 @@ export const useCredentials = create((set) => {
       refreshToken: credentials?.refreshToken || "",
       gatewayUrl: credentials?.gatewayUrl || "",
     },
+    partnerAccessToken: null,
+    customerAccessToken: null,
     setCredentials: (credentials) => set(() => credentials),
   };
 });
