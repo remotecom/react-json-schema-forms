@@ -94,7 +94,7 @@ export function CostCalculator() {
 
       {isSuccess && (
         <div className="result-area">
-          <h2 className="h2">Calculation Result</h2>
+          <p className="result-message">Calculation Result</p>
           <Result data={result.data} />
           <Button onClick={() => window.location.reload()}>Start Over</Button>
         </div>

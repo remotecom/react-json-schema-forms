@@ -8,6 +8,7 @@ import {
 } from "./schemas";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { Result } from "@/components/Result";
 
 const queryToSchema = {
   "contract-details": contractDetailsSchema,
@@ -21,24 +22,6 @@ function getSchemaFromQueryParam(schemaParam) {
     : "contract-details";
 }
 
-/**
- * Recursively maps the keys of an object using a provided function.
- *
- * @param {Object} obj - The object whose keys are to be mapped.
- * @param {Function} fn - A function that takes a key and returns a new key.
- * @returns {Object} A new object with the mapped keys.
- */
-function mapKeys(obj, fn) {
-  return Object.keys(obj).reduce((result, current) => {
-    if (typeof obj[current] == "object") {
-      result[fn(current)] = mapKeys(obj[current], fn);
-      return result;
-    }
-    result[fn(current)] = obj[current];
-    return result;
-  }, {});
-}
-
 export function JSONSchemaPlayground() {
   const [result, setResult] = useState();
   const [searchParams] = useSearchParams();
@@ -46,7 +29,9 @@ export function JSONSchemaPlayground() {
   const schema = queryToSchema[schemaParam] || contractDetailsSchema;
 
   useEffect(() => {
-    setResult(null);
+    if (result) {
+      setResult(null);
+    }
   }, [schemaParam]);
 
   return (
@@ -98,26 +83,13 @@ export function JSONSchemaPlayground() {
           className="m-0"
           jsonSchema={schema}
           onSubmit={(values) => {
-            const wrapObjectKeysWithSpan = mapKeys(
-              values,
-              (key) => `<span>${key}</span>`
-            );
-            setResult(wrapObjectKeysWithSpan);
+            setResult(values);
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
         />
       </div>
       <div className="grow-0 basis-2/4 max-w-md overflow-x-auto">
-        <div className="bg-blank p-4 text-xs">
-          <pre>
-            <code
-              className="[&>span]:text-primary"
-              dangerouslySetInnerHTML={{
-                __html: JSON.stringify(result || {}, null, 4),
-              }}
-            />
-          </pre>
-        </div>
+        {result && <Result data={result} />}
       </div>
     </div>
   );
