@@ -69,7 +69,7 @@ export function CompanyCreation() {
         <>
           {responseData ? (
             <div className="result-area">
-              <h2 className="h2">Company created successfully!</h2>
+              <p className="result-message">Company created successfully ✓</p>
               <Result data={responseData} />
               <Button onClick={() => window.location.reload()}>
                 Start Over

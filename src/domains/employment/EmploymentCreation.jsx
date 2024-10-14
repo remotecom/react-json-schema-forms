@@ -11,6 +11,7 @@ import {
   useJsonSchema,
   useUpdateEmployment,
 } from "./hooks";
+import { Result } from "@/components/Result";
 
 export function EmploymentCreation() {
   const [initialFormValues, setInitialFormValues] = useState(null);
@@ -29,7 +30,7 @@ export function EmploymentCreation() {
     {
       onSuccess: () => {
         setSubmissionStatus(
-          "Contract details and pricing plan submitted successfully, invite sent successfully."
+          "Contract details and pricing plan submitted successfully, invite sent successfully ✓"
         );
       },
     }
@@ -41,20 +42,18 @@ export function EmploymentCreation() {
     },
   });
   // Updates an employment
-  const { mutate: employmentUpdateMutation } = useUpdateEmployment(
-    employmentId,
-    {
+  const { mutate: employmentUpdateMutation, data: responseData } =
+    useUpdateEmployment(employmentId, {
       onSuccess: async () => {
         if (initialFormValues.send_self_enrollment_invitation) {
           employmentInviteMutation();
         } else {
           setSubmissionStatus(
-            "Contract details and pricing plan submitted successfully, invite was not sent as requested."
+            "Contract details and pricing plan submitted successfully, invite was not sent as requested ✓"
           );
         }
       },
-    }
-  );
+    });
 
   // Submit the initial form
   async function handleInitialFormSubmit(values) {
@@ -108,8 +107,9 @@ export function EmploymentCreation() {
       ) : (
         <>
           {submissionStatus ? (
-            <div className="form-area">
-              <h2>{submissionStatus}</h2>
+            <div className="result-area">
+              <p className="result-message">{submissionStatus}</p>
+              {responseData && <Result data={responseData} />}
               <Button onClick={handleStartOver}>Start Over</Button>
             </div>
           ) : (
