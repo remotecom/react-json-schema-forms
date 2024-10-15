@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getAccessToken, getClientCredentialsToken } from "@/utils/auth-utils";
+import { getAccessToken, getClientCredentialsToken } from "@/utils/auth.js";
 
 export const partnerApiClient = axios.create({
   headers: {

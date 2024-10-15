@@ -34,8 +34,9 @@ export const useCompanyJsonSchema = (countryCode) => {
  * Estimates the cost of employment
  * @returns {import("@tanstack/react-query").UseMutationResult}
  */
-export const useCompany = () => {
+export const useCompany = (options) => {
   return useMutation({
     mutationFn: fetchCompany,
+    ...options,
   });
 };
