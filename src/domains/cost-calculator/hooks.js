@@ -26,6 +26,7 @@ export const useCountries = () => {
     queryKey: ["countries"],
     queryFn: fetchCountries,
     select: (data) => data.data,
+    retry: false,
   });
 };
 

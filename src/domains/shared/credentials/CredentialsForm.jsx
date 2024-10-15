@@ -13,6 +13,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/Sheet.jsx";
 import { useCredentials } from "@/domains/shared/credentials/useCredentials.js";
+import { Link } from "react-router-dom";
 
 const validationSchema = object({
   clientId: string().required("Client ID is required"),
@@ -22,7 +23,7 @@ const validationSchema = object({
 });
 
 export function CredentialsForm() {
-  const { credentials, setCredentials } = useCredentials();
+  const { credentials, setCredentialsForm } = useCredentials();
 
   const formik = useFormik({
     initialValues: {
@@ -35,7 +36,7 @@ export function CredentialsForm() {
     onSubmit: (values) => {
       // Save form data to localStorage
       localStorage.setItem("credsFormData", JSON.stringify(values));
-      setCredentials(values);
+      setCredentialsForm(values);
     },
   });
 
@@ -50,7 +51,18 @@ export function CredentialsForm() {
         <SheetHeader>
           <SheetTitle>Insert credentials</SheetTitle>
           <SheetDescription>
-            If you don't know where to find these credentials, please refer to
+            For more information about Remote API credentials, please refer to
+            this
+            <Link
+              className="text-primary ml-1"
+              target="_blank"
+              rel="noopener noreferrer"
+              to={
+                "https://developer.remote.com/docs/authentication-for-partners"
+              }
+            >
+              page.
+            </Link>
           </SheetDescription>
         </SheetHeader>
         <div className="p-4 pb-0">
@@ -113,8 +125,9 @@ export function CredentialsForm() {
                   id="gatewayUrl"
                   name="gatewayUrl"
                   type="text"
+                  disabled
                   onChange={formik.handleChange}
-                  value={formik.values.gatewayUrl}
+                  defaultValue={formik.values.gatewayUrl}
                 />
                 {formik.touched.gatewayUrl && formik.errors.gatewayUrl ? (
                   <p className="error">{formik.errors.gatewayUrl}</p>

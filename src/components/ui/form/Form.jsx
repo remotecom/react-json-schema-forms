@@ -106,6 +106,7 @@ function formValuesToJsonValues(values, fields) {
 }
 
 export default function Form({ jsonSchema, onSubmit, className }) {
+  const [buttonLabel, setButtonLabel] = useState("Submit");
   const [modifiedSchema, setModifiedSchema] = useState(null);
 
   useEffect(() => {
@@ -148,6 +149,7 @@ export default function Form({ jsonSchema, onSubmit, className }) {
     console.log("Form values before casting:", formValues);
     const jsonValues = formValuesToJsonValues(formValues, fields);
     console.log("Form values after casting:", jsonValues);
+    setButtonLabel("Submitting...");
     onSubmit(jsonValues);
   }
 
@@ -182,7 +184,7 @@ export default function Form({ jsonSchema, onSubmit, className }) {
               );
             })}
 
-            <Button type="submit">Submit</Button>
+            <Button type="submit">{buttonLabel}</Button>
           </FormikForm>
         </div>
       )}

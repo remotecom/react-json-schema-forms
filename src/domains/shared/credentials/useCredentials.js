@@ -6,11 +6,22 @@ export const useCredentials = create((set) => {
     credentials: {
       clientId: credentials?.clientId || "",
       clientSecret: credentials?.clientSecret || "",
-      refreshToken: credentials?.refreshToken || "",
-      gatewayUrl: credentials?.gatewayUrl || "",
+      gatewayUrl: credentials?.gatewayUrl || "https://gateway.niceremote.com",
     },
-    partnerAccessToken: null,
-    customerAccessToken: null,
-    setCredentials: (credentials) => set(() => credentials),
+    refreshToken: credentials?.refreshToken || "",
+    partnerAccessToken: "",
+    customerAccessToken: "",
+    setCredentialsForm: (credentials) => {
+      const { refreshToken, ...restCredentials } = credentials;
+      return set((state) => ({
+        ...state,
+        credentials: restCredentials,
+        refreshToken,
+      }));
+    },
+    updateCustomerCredentials: ({
+      access_token: customerAccessToken,
+      refresh_token: refreshToken,
+    }) => set((state) => ({ ...state, customerAccessToken, refreshToken })),
   };
 });
