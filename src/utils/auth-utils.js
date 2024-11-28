@@ -6,15 +6,14 @@ export const getAccessToken = async () => {
   const { clientId, clientSecret, refreshToken, gatewayUrl } = credentials;
 
   if (!clientId || !clientSecret || !refreshToken || !gatewayUrl) {
-    const errorMessage = "Error fetching form data: Missing credentials.";
-    console.error(errorMessage);
+    console.error("Error fetching access token: Missing credentials.");
     return null;
   }
 
   const accessToken = useCredentials.getState().customerAccessToken;
-  if(accessToken) {
-    return accessToken
-  }
+  //if (accessToken) {
+   // return accessToken; // Use cached access token
+  //}
 
   const encodedCredentials = btoa(`${clientId}:${clientSecret}`);
   try {
@@ -22,7 +21,7 @@ export const getAccessToken = async () => {
       "/api/auth/oauth2/token",
       new URLSearchParams({
         grant_type: "refresh_token",
-        refresh_token: refreshToken,
+        refresh_token: refreshToken, // Always use the updated refresh token
       }),
       {
         headers: {
@@ -32,6 +31,7 @@ export const getAccessToken = async () => {
       }
     );
 
+    // Cache the access token
     useCredentials.setState({ customerAccessToken: response.data.access_token });
     return response.data.access_token;
   } catch (error) {
@@ -42,15 +42,15 @@ export const getAccessToken = async () => {
 
 export const getClientCredentialsToken = async () => {
   const credentials = useCredentials.getState().credentials;
-  
+
   const { clientId, clientSecret, gatewayUrl } = credentials;
-  
+
   if (!clientId || !clientSecret || !gatewayUrl) {
     const errorMessage = "Error fetching form data: Missing credentials.";
     console.error(errorMessage);
     return null;
   }
-  
+
   const accessToken = useCredentials.getState().partnerAccessToken;
   if(accessToken) {
     return accessToken
@@ -76,4 +76,9 @@ export const getClientCredentialsToken = async () => {
     console.error("Error fetching access token:", error);
     return null;
   }
+};
+export const useFetchCustomAccessToken = () => {
+  return useMutation(async (customRefreshToken) => {
+    return await getAccessToken(customRefreshToken);
+  });
 };
