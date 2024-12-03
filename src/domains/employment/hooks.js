@@ -39,11 +39,12 @@ async function fetchEmploymentInvite(employmentId) {
   return response.data;
 }
 
-export const useJsonSchema = (countryCode, employmentId) => {
+export const useJsonSchema = (countryCode, employmentId,formKey) => {
   const basicInformationSchema = useEmploymentBasicInformation(countryCode);
   const contractDetailsSchema = useEmploymentContractDetails(
     countryCode,
-    employmentId
+    employmentId,
+    formKey
   );
 
   return employmentId ? contractDetailsSchema : basicInformationSchema;
@@ -71,6 +72,8 @@ const useEmploymentContractDetails = (countryCode, employmentId) => {
     queryFn: () => fetchEmploymentContractDetails(countryCode),
     select: (data) => data.data,
     enabled: !!countryCode && !!employmentId,
+    cacheTime: 0, // Optional: Disable caching
+    staleTime: 0,
   });
 };
 

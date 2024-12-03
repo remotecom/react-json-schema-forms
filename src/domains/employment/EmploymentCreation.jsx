@@ -17,13 +17,17 @@ export function EmploymentCreation() {
   const [initialFormValues, setInitialFormValues] = useState(null);
   const [submissionStatus, setSubmissionStatus] = useState(null);
   const [employmentId, setEmploymentId] = useState();
+  const [contract_details, setcontract_details] = useState();
+  const [formKey, setFormKey] = useState(null);
+
+
   // Fetches the JSON schema for the employment form
   const {
     data: jsonSchema,
     isLoading,
     isError,
     error,
-  } = useJsonSchema(initialFormValues?.country_code, employmentId);
+  } = useJsonSchema(initialFormValues?.country_code, employmentId,formKey);
   // Sends an employment invite
   const { mutate: employmentInviteMutation } = useEmploymentInvite(
     employmentId,
@@ -86,6 +90,11 @@ export function EmploymentCreation() {
     setEmploymentId(null);
     setInitialFormValues(null);
     setSubmissionStatus(null);
+    setcontract_details(null);
+    setFormKey(null); 
+    if (formRef.current) {
+      formRef.current.resetForm(); // Reset the form's internal state
+    }
   };
 
   if (isLoading) {
@@ -115,6 +124,7 @@ export function EmploymentCreation() {
           ) : (
             <div className="flex flex-col items-center">
               <h2 className="h2">Employment Information Form</h2>
+              
               {jsonSchema && (
                 <Form jsonSchema={jsonSchema} onSubmit={handleSubmit} />
               )}
